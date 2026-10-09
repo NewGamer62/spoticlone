@@ -21,9 +21,24 @@ if (-not $flutterCmd) {
 $flutterVersion = & flutter --version | Select-Object -First 1
 Write-Host "  [OK] Detecte : $flutterVersion" -ForegroundColor Green
 
-# 2. Verification des outils de build Windows C++
+# 2. Verification du Mode Developpeur Windows et des outils C++
 Write-Host ""
-Write-Host "[2/4] Verification des Build Tools C++ pour Windows..." -ForegroundColor Cyan
+Write-Host "[2/4] Verification du Mode Developpeur Windows et des outils C++..." -ForegroundColor Cyan
+
+# Detection du Mode Developpeur (requis pour les symlinks des plugins)
+$devMode = (Get-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\AppModelUnlock" -ErrorAction SilentlyContinue).AllowDevelopmentWithoutDevLicense
+if ($devMode -ne 1) {
+    Write-Host "  [!] Le Mode Developpeur Windows n'est pas active." -ForegroundColor Yellow
+    Write-Host "      Flutter en a besoin pour creer les liens symboliques des plugins natifs." -ForegroundColor Yellow
+    $openSettings = Read-Host "Souhaitez-vous ouvrir les parametres Windows pour l'activer ? (O/N)"
+    if ($openSettings -match "^[oOyY]") {
+        Start-Process "ms-settings:developers"
+        Write-Host "  [INFO] Activez l'interrupteur 'Mode Developpeur', puis revenez ici." -ForegroundColor Cyan
+        Read-Host "Appuyez sur Entree une fois le mode active..."
+    }
+} else {
+    Write-Host "  [OK] Mode Developpeur Windows actif." -ForegroundColor Green
+}
 
 $progFilesX86 = [System.Environment]::GetFolderPath('ProgramFilesX86')
 $vsWherePath = "$progFilesX86\Microsoft Visual Studio\Installer\vswhere.exe"
