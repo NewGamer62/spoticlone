@@ -72,16 +72,18 @@ Write-Host "[3/4] Recuperation des dependances Flutter (flutter pub get)..." -Fo
 & flutter pub get
 Write-Host "  [OK] Dependances a jour." -ForegroundColor Green
 
-# 4. Choix de lancement
+# 4. Choix de lancement et d'installation
 Write-Host ""
-Write-Host "[4/4] Pret a lancer l'application !" -ForegroundColor Cyan
-Write-Host "1. Lancer sous Windows Desktop (C++ Natif)" -ForegroundColor White
+Write-Host "[4/4] Que souhaitez-vous faire ?" -ForegroundColor Cyan
+Write-Host "1. Lancer sous Windows Desktop (Mode Debug direct)" -ForegroundColor White
 Write-Host "2. Lancer sous Android (Smartphone USB ou Emulateur)" -ForegroundColor White
-Write-Host "3. Executer les tests automatises (flutter test)" -ForegroundColor White
-Write-Host "4. Quitter" -ForegroundColor White
+Write-Host "3. Compiler Windows Release et creer un raccourci sur le Bureau" -ForegroundColor White
+Write-Host "4. Generer l'APK Android autonome (.apk a installer/partager)" -ForegroundColor White
+Write-Host "5. Executer les tests automatises (flutter test)" -ForegroundColor White
+Write-Host "6. Quitter" -ForegroundColor White
 Write-Host ""
 
-$choice = Read-Host "Votre choix (1/2/3/4)"
+$choice = Read-Host "Votre choix (1/2/3/4/5/6)"
 switch ($choice) {
     "1" {
         Write-Host "Demarrage de SpotiClone sur Windows..." -ForegroundColor Green
@@ -92,6 +94,32 @@ switch ($choice) {
         & flutter run -d android
     }
     "3" {
+        Write-Host "Compilation de la version Windows Release en cours..." -ForegroundColor Cyan
+        & flutter build windows
+        $exePath = "$PSScriptRoot\build\windows\x64\runner\Release\spoticlone.exe"
+        if (Test-Path $exePath) {
+            $desktopDir = [System.Environment]::GetFolderPath('Desktop')
+            $shortcutPath = "$desktopDir\SpotiClone.lnk"
+            $wshShell = New-Object -ComObject WScript.Shell
+            $shortcut = $wshShell.CreateShortcut($shortcutPath)
+            $shortcut.TargetPath = $exePath
+            $shortcut.WorkingDirectory = "$PSScriptRoot\build\windows\x64\runner\Release"
+            $shortcut.Save()
+            Write-Host "  [OK] Raccourci cree sur votre Bureau Windows : $shortcutPath" -ForegroundColor Green
+            Write-Host "  Vous pouvez desormais lancer SpotiClone d'un simple double-clic sans terminal !" -ForegroundColor Green
+        }
+    }
+    "4" {
+        Write-Host "Generation de l'APK Android en cours..." -ForegroundColor Cyan
+        & flutter build apk --debug
+        $apkPath = "$PSScriptRoot\build\app\outputs\flutter-apk\app-debug.apk"
+        if (Test-Path $apkPath) {
+            Write-Host "  [OK] Fichier APK autonome genere avec succes !" -ForegroundColor Green
+            Write-Host "  Fichier : $apkPath" -ForegroundColor Cyan
+            Write-Host "  Envoyez simplement ce fichier .apk sur votre telephone pour l'installer sans PC !" -ForegroundColor Green
+        }
+    }
+    "5" {
         Write-Host "Execution de la suite de tests..." -ForegroundColor Green
         & flutter test
     }
