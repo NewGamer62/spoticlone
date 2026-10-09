@@ -100,8 +100,8 @@ flutter analyze
 # Lancer la suite de tests unitaires et de widgets
 flutter test
 
-# Valider la parité des fonctionnalités (Replica Tool)
-python ../.gemini/config/skills/replica-skill/replica-diff/parity.py replica/features.csv
+# Valider la parité des fonctionnalités (Script Python autonome inclus)
+python replica/parity.py replica/features.csv
 ```
 
 ---
