@@ -1,0 +1,22 @@
+feature,area,priority,original,clone,notes
+Home screen with featured shelves and mixes,home,must,yes,yes,Browse cards with album covers
+Search songs artists and albums by text query,search,must,yes,yes,Instant search query with results
+Genre category browsing grid,search,must,yes,yes,Visual colored cards for music exploration
+Audio streaming player with play pause seek,player,must,yes,yes,Seamless background audio streaming
+Bottom persistent player bar on desktop,player,must,yes,yes,Spotify desktop style 3-section player bar
+Floating mini-player and fullscreen player on mobile,player,must,yes,yes,Android mobile layout with swipe gestures
+Library with liked songs collection,library,must,yes,yes,Local favorites saved in Drift SQLite
+Create and edit custom playlists,library,must,yes,yes,Add songs remove songs reorder
+Playback queue with next up tracks,queue,must,yes,yes,View queue and skip to any queued track
+Adaptive responsive UI (Desktop 3-column vs Mobile BottomBar),layout,must,yes,yes,Automatic responsive breakpoint adaptation
+Volume control with mute and volume slider,player,should,yes,yes,Desktop volume slider and system sync
+Shuffle and repeat toggle modes,player,should,yes,yes,Cycle repeat-all repeat-one shuffle
+Synchronized lyrics view with timestamp scrolling,lyrics,should,yes,yes,LRC format synchronized lyrics display
+Offline playback cache for previously played tracks,offline,should,yes,yes,Local caching of audio files
+Export and import playlists as JSON,data,should,no,yes,Replica-entrepreneur feature improvement over Spotify
+Track duration and elapsed progress counter,player,should,yes,yes,Accurate mm:ss formatting
+Keyboard media shortcuts and Windows media integration,player,could,yes,yes,Space for play/pause media keys
+Dark and OLED pure black theme modes,theme,could,no,yes,Replica-entrepreneur feature improvement
+Sleep timer to pause playback automatically,player,could,yes,yes,Timer option for bedtime listening
+Spotify DRM Widevine playback,drm,could,yes,skip,Clean-room decision: open streams replace DRM
+Friend live listening social feed,social,could,yes,skip,Closed server network out of scope
