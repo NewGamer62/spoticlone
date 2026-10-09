@@ -64,7 +64,15 @@ Spotify Premium restreint l'écoute hors-ligne, impose un chiffrement DRM propri
 - [Flutter SDK](https://docs.flutter.dev/get-started/install) (3.38 ou supérieur)
 - Git
 
-### Lancement en 3 commandes
+### Démarrage Automatisé (Recommandé sur Windows)
+
+Exécutez simplement le script PowerShell à la racine : il inspecte votre environnement, installe les outils C++ manquants si nécessaire, résout les dépendances et démarre l'application :
+
+```powershell
+.\setup.ps1
+```
+
+### Lancement Manuel
 
 ```bash
 # 1. Cloner le dépôt
