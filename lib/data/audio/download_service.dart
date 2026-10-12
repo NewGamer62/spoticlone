@@ -24,7 +24,7 @@ class DownloadService {
         streamUrl = await YoutubeAudioResolver.resolveAudioStream(track);
       }
 
-      streamUrl ??= 'https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3?filename=lofi-study-112191.mp3';
+      streamUrl ??= 'https://raw.githubusercontent.com/rafaelreis-hotmart/Audio-Sample-files/master/sample.mp3';
 
       final dir = await getDownloadsDirectory();
       // Sanitize file name

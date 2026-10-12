@@ -34,13 +34,14 @@ class AudioPlayerService {
         streamUrl = await YoutubeAudioResolver.resolveAudioStream(track);
       }
 
-      streamUrl ??= 'https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3?filename=lofi-study-112191.mp3';
+      streamUrl ??= 'https://raw.githubusercontent.com/rafaelreis-hotmart/Audio-Sample-files/master/sample.mp3';
 
       await _player.setUrl(streamUrl);
       await _player.play();
       return true;
     } catch (e) {
-      // Graceful playback error handling
+      // Graceful playback error handling & fallback
+      print('[AudioPlayerService] Playback error for track ${track.title}: $e');
       return false;
     }
   }
