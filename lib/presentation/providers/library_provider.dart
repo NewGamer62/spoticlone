@@ -200,6 +200,33 @@ class LibraryNotifier extends Notifier<LibraryState> {
     await _storage.saveSpotifyCredentials(clientId, clientSecret);
   }
 
+  Future<Playlist> importSpotifyPlaylistByUrl(String playlistInput) async {
+    final playlistId = SpotifyImportService.extractPlaylistId(playlistInput);
+    if (playlistId == null) {
+      throw Exception('Format de lien ou identifiant Spotify invalide.');
+    }
+
+    final playlist = await SpotifyImportService.fetchPublicPlaylist(playlistId);
+    if (playlist == null) {
+      throw Exception('Impossible de récupérer la playlist. Vérifiez que la playlist est bien publique.');
+    }
+
+    // Add to library
+    final existingIndex = state.playlists.indexWhere((p) => p.id == playlist.id);
+    List<Playlist> updated;
+    if (existingIndex >= 0) {
+      updated = List<Playlist>.from(state.playlists)..[existingIndex] = playlist;
+    } else {
+      updated = [...state.playlists, playlist];
+    }
+
+    state = state.copyWith(playlists: updated);
+    final customOnly = updated.where((p) => p.isCustom).toList();
+    await _storage.saveCustomPlaylists(customOnly);
+
+    return playlist;
+  }
+
   Future<Playlist> importSpotifyPlaylist({
     required String playlistInput,
     required String clientId,

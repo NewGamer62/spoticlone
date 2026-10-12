@@ -79,6 +79,7 @@ class _LibraryScreenState extends ConsumerState<LibraryScreen> {
     final clientIdController = TextEditingController(text: creds['client_id']);
     final secretController = TextEditingController(text: creds['client_secret']);
     bool isLoading = false;
+    bool showDevApi = false;
     String? errorMessage;
 
     if (!mounted) return;
@@ -104,42 +105,70 @@ class _LibraryScreenState extends ConsumerState<LibraryScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const Text(
-                    'Collez le lien de votre playlist Spotify publique (ou ID) ainsi que vos identifiants Spotify Developer gratuits (developer.spotify.com).',
+                    'Collez simplement le lien de partage de votre playlist Spotify publique. Aucune configuration ni inscription n\'est nécessaire.',
                     style: TextStyle(color: AppColors.textMuted, fontSize: 13),
                   ),
                   const SizedBox(height: 16),
                   TextField(
                     controller: urlController,
+                    autofocus: true,
                     style: const TextStyle(color: AppColors.text),
                     decoration: const InputDecoration(
-                      labelText: 'Lien ou ID de la playlist Spotify',
+                      labelText: 'Lien de la playlist Spotify',
                       hintText: 'https://open.spotify.com/playlist/...',
                       hintStyle: TextStyle(color: AppColors.textMuted, fontSize: 12),
                       labelStyle: TextStyle(color: AppColors.accent),
                       border: OutlineInputBorder(),
                     ),
                   ),
-                  const SizedBox(height: 14),
-                  TextField(
-                    controller: clientIdController,
-                    style: const TextStyle(color: AppColors.text),
-                    decoration: const InputDecoration(
-                      labelText: 'Spotify Client ID',
-                      labelStyle: TextStyle(color: AppColors.textMuted),
-                      border: OutlineInputBorder(),
+                  const SizedBox(height: 12),
+                  InkWell(
+                    onTap: () {
+                      setDialogState(() {
+                        showDevApi = !showDevApi;
+                      });
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 4),
+                      child: Row(
+                        children: [
+                          Icon(
+                            showDevApi ? Icons.arrow_drop_down : Icons.arrow_right,
+                            color: AppColors.textMuted,
+                          ),
+                          const Text(
+                            'Options avancées (Clés API Spotify Developer)',
+                            style: TextStyle(color: AppColors.textMuted, fontSize: 12),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
-                  const SizedBox(height: 14),
-                  TextField(
-                    controller: secretController,
-                    obscureText: true,
-                    style: const TextStyle(color: AppColors.text),
-                    decoration: const InputDecoration(
-                      labelText: 'Spotify Client Secret',
-                      labelStyle: TextStyle(color: AppColors.textMuted),
-                      border: OutlineInputBorder(),
+                  if (showDevApi) ...[
+                    const SizedBox(height: 8),
+                    TextField(
+                      controller: clientIdController,
+                      style: const TextStyle(color: AppColors.text, fontSize: 13),
+                      decoration: const InputDecoration(
+                        labelText: 'Client ID (Optionnel)',
+                        labelStyle: TextStyle(color: AppColors.textMuted),
+                        border: OutlineInputBorder(),
+                        isDense: true,
+                      ),
                     ),
-                  ),
+                    const SizedBox(height: 8),
+                    TextField(
+                      controller: secretController,
+                      obscureText: true,
+                      style: const TextStyle(color: AppColors.text, fontSize: 13),
+                      decoration: const InputDecoration(
+                        labelText: 'Client Secret (Optionnel)',
+                        labelStyle: TextStyle(color: AppColors.textMuted),
+                        border: OutlineInputBorder(),
+                        isDense: true,
+                      ),
+                    ),
+                  ],
                   if (errorMessage != null) ...[
                     const SizedBox(height: 12),
                     Text(
@@ -174,9 +203,9 @@ class _LibraryScreenState extends ConsumerState<LibraryScreen> {
                       final cid = clientIdController.text.trim();
                       final csec = secretController.text.trim();
 
-                      if (url.isEmpty || cid.isEmpty || csec.isEmpty) {
+                      if (url.isEmpty) {
                         setDialogState(() {
-                          errorMessage = 'Veuillez remplir tous les champs.';
+                          errorMessage = 'Veuillez coller un lien Spotify.';
                         });
                         return;
                       }
@@ -187,11 +216,17 @@ class _LibraryScreenState extends ConsumerState<LibraryScreen> {
                       });
 
                       try {
-                        final importedPl = await ref.read(libraryProvider.notifier).importSpotifyPlaylist(
-                              playlistInput: url,
-                              clientId: cid,
-                              clientSecret: csec,
-                            );
+                        final Playlist importedPl;
+                        // Si les identifiants dev sont renseignés, on utilise l'API, sinon le scraper public instantané
+                        if (cid.isNotEmpty && csec.isNotEmpty) {
+                          importedPl = await ref.read(libraryProvider.notifier).importSpotifyPlaylist(
+                                playlistInput: url,
+                                clientId: cid,
+                                clientSecret: csec,
+                              );
+                        } else {
+                          importedPl = await ref.read(libraryProvider.notifier).importSpotifyPlaylistByUrl(url);
+                        }
 
                         if (ctx.mounted) Navigator.pop(ctx);
                         if (context.mounted) {

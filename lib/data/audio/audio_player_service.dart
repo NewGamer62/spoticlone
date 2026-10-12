@@ -39,9 +39,8 @@ class AudioPlayerService {
       await _player.setUrl(streamUrl);
       await _player.play();
       return true;
-    } catch (e) {
+    } catch (_) {
       // Graceful playback error handling & fallback
-      print('[AudioPlayerService] Playback error for track ${track.title}: $e');
       return false;
     }
   }

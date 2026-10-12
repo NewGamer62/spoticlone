@@ -6,6 +6,104 @@ import '../../domain/models/track.dart';
 class SpotifyImportService {
   static final HttpClient _client = HttpClient();
 
+  /// Extracts the Spotify playlist ID from a URL, URI or raw ID
+  static String? extractPlaylistId(String input) {
+    final trimmed = input.trim();
+    if (trimmed.isEmpty) return null;
+
+    final uriMatch = RegExp(r'spotify:playlist:([a-zA-Z0-9]+)').firstMatch(trimmed);
+    if (uriMatch != null) return uriMatch.group(1);
+
+    final urlMatch = RegExp(r'open\.spotify\.com\/playlist\/([a-zA-Z0-9]+)').firstMatch(trimmed);
+    if (urlMatch != null) return urlMatch.group(1);
+
+    if (RegExp(r'^[a-zA-Z0-9]{15,30}$').hasMatch(trimmed)) {
+      return trimmed;
+    }
+
+    return null;
+  }
+
+  /// 1-CLICK SCRAPER: Extracts public playlist metadata and tracks from Spotify embed
+  /// No API keys, no developer account required!
+  static Future<Playlist?> fetchPublicPlaylist(String playlistId) async {
+    try {
+      final embedUrl = Uri.parse('https://open.spotify.com/embed/playlist/$playlistId');
+      final request = await _client.getUrl(embedUrl);
+      request.headers.set('User-Agent', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36');
+      final response = await request.close();
+
+      if (response.statusCode != 200) {
+        return null;
+      }
+
+      final html = await response.transform(utf8.decoder).join();
+      final scriptMatch = RegExp(r'<script id="__NEXT_DATA__" type="application/json">([\s\S]*?)</script>').firstMatch(html);
+      if (scriptMatch == null) return null;
+
+      final jsonContent = scriptMatch.group(1);
+      if (jsonContent == null) return null;
+
+      final data = jsonDecode(jsonContent) as Map<String, dynamic>;
+      final props = data['props'] as Map<String, dynamic>?;
+      final pageProps = props?['pageProps'] as Map<String, dynamic>?;
+      final state = pageProps?['state'] as Map<String, dynamic>?;
+      final dataEntity = state?['data'] as Map<String, dynamic>?;
+      final entity = dataEntity?['entity'] as Map<String, dynamic>?;
+
+      if (entity == null) return null;
+
+      final title = entity['title'] as String? ?? 'Imported Playlist';
+      final subtitle = entity['subtitle'] as String? ?? '';
+      
+      // Extract Cover
+      String coverUrl = 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=600&auto=format&fit=crop&q=80';
+      final visual = entity['visualIdentity'] as Map<String, dynamic>?;
+      final images = visual?['image'] as List<dynamic>?;
+      if (images != null && images.isNotEmpty) {
+        final lastImg = images.last as Map<String, dynamic>;
+        coverUrl = lastImg['url'] as String? ?? coverUrl;
+      }
+
+      // Extract Track list
+      final trackList = entity['trackList'] as List<dynamic>? ?? [];
+      final tracks = <Track>[];
+
+      for (var i = 0; i < trackList.length; i++) {
+        final item = trackList[i] as Map<String, dynamic>;
+        final trackTitle = item['title'] as String? ?? 'Unknown Title';
+        final trackArtist = item['subtitle'] as String? ?? 'Unknown Artist';
+        final durationMs = item['duration'] as int? ?? 180000;
+        final uri = item['uri'] as String? ?? 'sp-$i';
+        final trackId = uri.replaceFirst('spotify:track:', '');
+
+        tracks.add(
+          Track(
+            id: 'sp-$trackId',
+            title: trackTitle,
+            artist: trackArtist,
+            album: title,
+            duration: Duration(milliseconds: durationMs),
+            coverUrl: coverUrl,
+            audioUrl: null, // Resolved on-demand via YouTube
+          ),
+        );
+      }
+
+      return Playlist(
+        id: 'sp-pl-$playlistId',
+        title: title,
+        description: subtitle,
+        coverUrl: coverUrl,
+        tracks: tracks,
+        isCustom: true,
+        createdAt: DateTime.now(),
+      );
+    } catch (_) {
+      return null;
+    }
+  }
+
   /// Obtains a short-lived bearer token using Spotify Client Credentials Flow
   static Future<String?> getAccessToken({
     required String clientId,
@@ -36,34 +134,12 @@ class SpotifyImportService {
     }
   }
 
-  /// Extracts the Spotify playlist ID from a URL, URI or raw ID
-  static String? extractPlaylistId(String input) {
-    final trimmed = input.trim();
-    if (trimmed.isEmpty) return null;
-
-    // Pattern 1: URI spotify:playlist:37i9dQZF1DXcBWIGoYBM5M
-    final uriMatch = RegExp(r'spotify:playlist:([a-zA-Z0-9]+)').firstMatch(trimmed);
-    if (uriMatch != null) return uriMatch.group(1);
-
-    // Pattern 2: URL https://open.spotify.com/playlist/37i9dQZF1DXcBWIGoYBM5M?si=...
-    final urlMatch = RegExp(r'open\.spotify\.com\/playlist\/([a-zA-Z0-9]+)').firstMatch(trimmed);
-    if (urlMatch != null) return urlMatch.group(1);
-
-    // Pattern 3: Raw ID (typically 22 alphanumeric chars)
-    if (RegExp(r'^[a-zA-Z0-9]{15,30}$').hasMatch(trimmed)) {
-      return trimmed;
-    }
-
-    return null;
-  }
-
-  /// Fetches playlist metadata and all tracks from Spotify API
+  /// Fetches playlist metadata and all tracks from Spotify Official API
   static Future<Playlist?> fetchPlaylist({
     required String playlistId,
     required String accessToken,
   }) async {
     try {
-      // 1. Fetch playlist metadata
       final metaUri = Uri.parse('https://api.spotify.com/v1/playlists/$playlistId');
       final metaReq = await _client.getUrl(metaUri);
       metaReq.headers.set('Authorization', 'Bearer $accessToken');
@@ -86,7 +162,6 @@ class SpotifyImportService {
         coverUrl = firstImg['url'] as String? ?? coverUrl;
       }
 
-      // 2. Extract tracks (with pagination support up to 500 tracks)
       final tracks = <Track>[];
       var nextUrl = 'https://api.spotify.com/v1/playlists/$playlistId/tracks?limit=100';
 
@@ -134,7 +209,7 @@ class SpotifyImportService {
               album: albumName,
               duration: Duration(milliseconds: durationMs),
               coverUrl: trackCover,
-              audioUrl: null, // Resolves dynamically when played or downloaded
+              audioUrl: null,
             ),
           );
         }
