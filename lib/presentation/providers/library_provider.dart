@@ -2,6 +2,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../data/audio/download_service.dart';
 import '../../data/local/storage_service.dart';
 import '../../data/music_catalog.dart';
+import '../../data/spotify/spotify_import_service.dart';
 import '../../domain/models/playlist.dart';
 import '../../domain/models/track.dart';
 
@@ -189,6 +190,59 @@ class LibraryNotifier extends Notifier<LibraryState> {
     state = state.copyWith(playlists: updated);
     final customOnly = updated.where((p) => p.isCustom).toList();
     await _storage.saveCustomPlaylists(customOnly);
+  }
+
+  Future<Map<String, String>> getSpotifyCredentials() async {
+    return _storage.loadSpotifyCredentials();
+  }
+
+  Future<void> saveSpotifyCredentials(String clientId, String clientSecret) async {
+    await _storage.saveSpotifyCredentials(clientId, clientSecret);
+  }
+
+  Future<Playlist> importSpotifyPlaylist({
+    required String playlistInput,
+    required String clientId,
+    required String clientSecret,
+  }) async {
+    final playlistId = SpotifyImportService.extractPlaylistId(playlistInput);
+    if (playlistId == null) {
+      throw Exception('Format de lien ou identifiant Spotify invalide.');
+    }
+
+    final token = await SpotifyImportService.getAccessToken(
+      clientId: clientId,
+      clientSecret: clientSecret,
+    );
+    if (token == null) {
+      throw Exception('Authentification Spotify échouée. Vérifiez vos identifiants Client ID et Secret.');
+    }
+
+    final playlist = await SpotifyImportService.fetchPlaylist(
+      playlistId: playlistId,
+      accessToken: token,
+    );
+    if (playlist == null) {
+      throw Exception('Impossible de récupérer la playlist Spotify. Vérifiez que la playlist est bien publique.');
+    }
+
+    // Save credentials for next time
+    await saveSpotifyCredentials(clientId, clientSecret);
+
+    // Add to library
+    final existingIndex = state.playlists.indexWhere((p) => p.id == playlist.id);
+    List<Playlist> updated;
+    if (existingIndex >= 0) {
+      updated = List<Playlist>.from(state.playlists)..[existingIndex] = playlist;
+    } else {
+      updated = [...state.playlists, playlist];
+    }
+
+    state = state.copyWith(playlists: updated);
+    final customOnly = updated.where((p) => p.isCustom).toList();
+    await _storage.saveCustomPlaylists(customOnly);
+
+    return playlist;
   }
 }
 

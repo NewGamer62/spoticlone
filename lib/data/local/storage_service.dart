@@ -93,6 +93,21 @@ class LocalStorageService {
     await _writeData(data);
   }
 
+  Future<Map<String, String>> loadSpotifyCredentials() async {
+    final data = await _readData();
+    return {
+      'client_id': (data['spotify_client_id'] ?? '').toString(),
+      'client_secret': (data['spotify_client_secret'] ?? '').toString(),
+    };
+  }
+
+  Future<void> saveSpotifyCredentials(String clientId, String clientSecret) async {
+    final data = await _readData();
+    data['spotify_client_id'] = clientId.trim();
+    data['spotify_client_secret'] = clientSecret.trim();
+    await _writeData(data);
+  }
+
   Future<String> exportPlaylistsJson(List<Playlist> playlists) async {
     return const JsonEncoder.withIndent('  ').convert(
       playlists.map((p) => p.toJson()).toList(),

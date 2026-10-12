@@ -73,6 +73,151 @@ class _LibraryScreenState extends ConsumerState<LibraryScreen> {
     );
   }
 
+  void _showImportSpotifyDialog() async {
+    final creds = await ref.read(libraryProvider.notifier).getSpotifyCredentials();
+    final urlController = TextEditingController();
+    final clientIdController = TextEditingController(text: creds['client_id']);
+    final secretController = TextEditingController(text: creds['client_secret']);
+    bool isLoading = false;
+    String? errorMessage;
+
+    if (!mounted) return;
+
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (ctx) => StatefulBuilder(
+        builder: (context, setDialogState) => AlertDialog(
+          backgroundColor: AppColors.surfaceElevated,
+          title: Row(
+            children: const [
+              Icon(Icons.sync_alt, color: AppColors.accent),
+              SizedBox(width: 10),
+              Text('Importer une playlist Spotify', style: TextStyle(color: AppColors.text, fontSize: 18)),
+            ],
+          ),
+          content: SizedBox(
+            width: 480,
+            child: SingleChildScrollView(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text(
+                    'Collez le lien de votre playlist Spotify publique (ou ID) ainsi que vos identifiants Spotify Developer gratuits (developer.spotify.com).',
+                    style: TextStyle(color: AppColors.textMuted, fontSize: 13),
+                  ),
+                  const SizedBox(height: 16),
+                  TextField(
+                    controller: urlController,
+                    style: const TextStyle(color: AppColors.text),
+                    decoration: const InputDecoration(
+                      labelText: 'Lien ou ID de la playlist Spotify',
+                      hintText: 'https://open.spotify.com/playlist/...',
+                      hintStyle: TextStyle(color: AppColors.textMuted, fontSize: 12),
+                      labelStyle: TextStyle(color: AppColors.accent),
+                      border: OutlineInputBorder(),
+                    ),
+                  ),
+                  const SizedBox(height: 14),
+                  TextField(
+                    controller: clientIdController,
+                    style: const TextStyle(color: AppColors.text),
+                    decoration: const InputDecoration(
+                      labelText: 'Spotify Client ID',
+                      labelStyle: TextStyle(color: AppColors.textMuted),
+                      border: OutlineInputBorder(),
+                    ),
+                  ),
+                  const SizedBox(height: 14),
+                  TextField(
+                    controller: secretController,
+                    obscureText: true,
+                    style: const TextStyle(color: AppColors.text),
+                    decoration: const InputDecoration(
+                      labelText: 'Spotify Client Secret',
+                      labelStyle: TextStyle(color: AppColors.textMuted),
+                      border: OutlineInputBorder(),
+                    ),
+                  ),
+                  if (errorMessage != null) ...[
+                    const SizedBox(height: 12),
+                    Text(
+                      errorMessage!,
+                      style: const TextStyle(color: Colors.redAccent, fontSize: 13),
+                    ),
+                  ],
+                  if (isLoading) ...[
+                    const SizedBox(height: 16),
+                    const Center(
+                      child: CircularProgressIndicator(color: AppColors.accent),
+                    ),
+                  ],
+                ],
+              ),
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: isLoading ? null : () => Navigator.pop(ctx),
+              child: const Text('Annuler', style: TextStyle(color: AppColors.textMuted)),
+            ),
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: AppColors.accent,
+                foregroundColor: AppColors.onAccent,
+              ),
+              onPressed: isLoading
+                  ? null
+                  : () async {
+                      final url = urlController.text.trim();
+                      final cid = clientIdController.text.trim();
+                      final csec = secretController.text.trim();
+
+                      if (url.isEmpty || cid.isEmpty || csec.isEmpty) {
+                        setDialogState(() {
+                          errorMessage = 'Veuillez remplir tous les champs.';
+                        });
+                        return;
+                      }
+
+                      setDialogState(() {
+                        isLoading = true;
+                        errorMessage = null;
+                      });
+
+                      try {
+                        final importedPl = await ref.read(libraryProvider.notifier).importSpotifyPlaylist(
+                              playlistInput: url,
+                              clientId: cid,
+                              clientSecret: csec,
+                            );
+
+                        if (ctx.mounted) Navigator.pop(ctx);
+                        if (context.mounted) {
+                          ref.read(navigationProvider.notifier).openPlaylist(importedPl);
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text('Playlist "${importedPl.title}" importée (${importedPl.tracks.length} titres) !'),
+                              backgroundColor: AppColors.surfaceHighlight,
+                            ),
+                          );
+                        }
+                      } catch (e) {
+                        setDialogState(() {
+                          isLoading = false;
+                          errorMessage = e.toString().replaceFirst('Exception: ', '');
+                        });
+                      }
+                    },
+              child: const Text('Importer'),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final library = ref.watch(libraryProvider);
@@ -97,10 +242,30 @@ class _LibraryScreenState extends ConsumerState<LibraryScreen> {
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  IconButton(
-                    tooltip: 'Create Playlist',
-                    icon: const Icon(Icons.add, color: AppColors.text, size: 28),
-                    onPressed: _showCreatePlaylistDialog,
+                  Row(
+                    children: [
+                      ElevatedButton.icon(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: AppColors.surfaceElevated,
+                          foregroundColor: AppColors.text,
+                          elevation: 0,
+                          padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20),
+                            side: const BorderSide(color: AppColors.border),
+                          ),
+                        ),
+                        icon: const Icon(Icons.sync_alt, size: 18, color: AppColors.accent),
+                        label: const Text('Import Spotify', style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600)),
+                        onPressed: _showImportSpotifyDialog,
+                      ),
+                      const SizedBox(width: 8),
+                      IconButton(
+                        tooltip: 'Create Playlist',
+                        icon: const Icon(Icons.add, color: AppColors.text, size: 28),
+                        onPressed: _showCreatePlaylistDialog,
+                      ),
+                    ],
                   ),
                 ],
               ),
