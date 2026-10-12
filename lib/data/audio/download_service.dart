@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 import 'package:path_provider/path_provider.dart';
 import '../../domain/models/track.dart';
@@ -5,6 +6,28 @@ import 'youtube_audio_resolver.dart';
 
 class DownloadService {
   static final HttpClient _httpClient = HttpClient();
+  static int _activeDownloads = 0;
+  static const int _maxConcurrentDownloads = 2;
+  static final List<Completer<void>> _queue = [];
+
+  static Future<void> _acquireSlot() async {
+    if (_activeDownloads < _maxConcurrentDownloads) {
+      _activeDownloads++;
+      return;
+    }
+    final completer = Completer<void>();
+    _queue.add(completer);
+    await completer.future;
+  }
+
+  static void _releaseSlot() {
+    if (_queue.isNotEmpty) {
+      final next = _queue.removeAt(0);
+      next.complete();
+    } else {
+      _activeDownloads--;
+    }
+  }
 
   /// Gets the directory where offline tracks are stored
   static Future<Directory> getDownloadsDirectory() async {
@@ -18,6 +41,7 @@ class DownloadService {
 
   /// Downloads a track audio stream to local file storage for 100% offline playback
   static Future<String?> downloadTrack(Track track) async {
+    await _acquireSlot();
     try {
       String? streamUrl = track.audioUrl;
       if (streamUrl == null || streamUrl.isEmpty) {
@@ -43,6 +67,8 @@ class DownloadService {
       return null;
     } catch (e) {
       return null;
+    } finally {
+      _releaseSlot();
     }
   }
 

@@ -1,5 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../data/audio/download_service.dart';
+import '../../data/audio/youtube_audio_resolver.dart';
+import '../../data/deezer/deezer_import_service.dart';
 import '../../data/local/storage_service.dart';
 import '../../data/music_catalog.dart';
 import '../../data/spotify/spotify_import_service.dart';
@@ -200,18 +202,43 @@ class LibraryNotifier extends Notifier<LibraryState> {
     await _storage.saveSpotifyCredentials(clientId, clientSecret);
   }
 
-  Future<Playlist> importSpotifyPlaylistByUrl(String playlistInput) async {
-    final playlistId = SpotifyImportService.extractPlaylistId(playlistInput);
-    if (playlistId == null) {
-      throw Exception('Format de lien ou identifiant Spotify invalide.');
+  Future<Playlist> importPlaylistFromAnyPlatform(String input) async {
+    final trimmed = input.trim();
+    if (trimmed.isEmpty) {
+      throw Exception('Veuillez entrer un lien valide.');
     }
 
-    final playlist = await SpotifyImportService.fetchPublicPlaylist(playlistId);
-    if (playlist == null) {
-      throw Exception('Impossible de récupérer la playlist. Vérifiez que la playlist est bien publique.');
+    // 1. YouTube / YouTube Music detection
+    if (trimmed.contains('youtube.com') || trimmed.contains('youtu.be') || trimmed.startsWith('PL')) {
+      final ytid = YoutubeAudioResolver.extractPlaylistId(trimmed);
+      if (ytid == null) {
+        throw Exception('Lien de playlist YouTube invalide.');
+      }
+      final pl = await YoutubeAudioResolver.fetchYoutubePlaylist(ytid);
+      if (pl == null) {
+        throw Exception('Impossible de charger la playlist YouTube. Vérifiez qu\'elle est publique ou non répertoriée.');
+      }
+      return _saveImportedPlaylist(pl);
     }
 
-    // Add to library
+    // 2. Deezer detection
+    if (trimmed.contains('deezer.com') || trimmed.contains('deezer.page.link')) {
+      final dzid = DeezerImportService.extractPlaylistId(trimmed);
+      if (dzid == null) {
+        throw Exception('Lien de playlist Deezer invalide.');
+      }
+      final pl = await DeezerImportService.fetchPlaylist(dzid);
+      if (pl == null) {
+        throw Exception('Impossible de charger la playlist Deezer. Vérifiez qu\'elle est publique.');
+      }
+      return _saveImportedPlaylist(pl);
+    }
+
+    // 3. Spotify detection
+    return importSpotifyPlaylistByUrl(trimmed);
+  }
+
+  Future<Playlist> _saveImportedPlaylist(Playlist playlist) async {
     final existingIndex = state.playlists.indexWhere((p) => p.id == playlist.id);
     List<Playlist> updated;
     if (existingIndex >= 0) {
@@ -223,8 +250,21 @@ class LibraryNotifier extends Notifier<LibraryState> {
     state = state.copyWith(playlists: updated);
     final customOnly = updated.where((p) => p.isCustom).toList();
     await _storage.saveCustomPlaylists(customOnly);
-
     return playlist;
+  }
+
+  Future<Playlist> importSpotifyPlaylistByUrl(String playlistInput) async {
+    final playlistId = SpotifyImportService.extractPlaylistId(playlistInput);
+    if (playlistId == null) {
+      throw Exception('Format de lien ou identifiant Spotify invalide.');
+    }
+
+    final playlist = await SpotifyImportService.fetchPublicPlaylist(playlistId);
+    if (playlist == null) {
+      throw Exception('Impossible de récupérer la playlist. Vérifiez que la playlist est bien publique.');
+    }
+
+    return _saveImportedPlaylist(playlist);
   }
 
   Future<Playlist> importSpotifyPlaylist({

@@ -2,6 +2,7 @@ import 'dart:math';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:just_audio/just_audio.dart' as ja;
 import '../../data/audio/audio_player_service.dart';
+import '../../data/audio/audio_preload_service.dart';
 import '../../domain/models/track.dart';
 
 enum RepeatMode { off, all, one }
@@ -118,6 +119,12 @@ class PlayerNotifier extends Notifier<PlayerStateData> {
       position: Duration.zero,
       duration: track.duration,
     );
+
+    // Predictive pre-fetching: preload the next track in queue right away
+    final nextIndex = (index >= 0 ? index : 0) + 1;
+    if (nextIndex < queue.length) {
+      AudioPreloadService.preloadTrack(queue[nextIndex]);
+    }
 
     await _audioService.playTrack(track);
   }

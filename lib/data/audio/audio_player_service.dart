@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:io';
 import 'package:just_audio/just_audio.dart';
 import '../../domain/models/track.dart';
+import 'audio_preload_service.dart';
 import 'youtube_audio_resolver.dart';
 
 class AudioPlayerService {
@@ -28,17 +29,32 @@ class AudioPlayerService {
         }
       }
 
-      // 2. Otherwise stream from URL
-      String? streamUrl = track.audioUrl;
+      // 2. Otherwise stream from URL (Check Preload Cache first)
+      String? streamUrl = AudioPreloadService.getCachedStreamUrl(track.id) ?? track.audioUrl;
       if (streamUrl == null || streamUrl.isEmpty) {
         streamUrl = await YoutubeAudioResolver.resolveAudioStream(track);
+        if (streamUrl != null) {
+          AudioPreloadService.cacheStreamUrl(track.id, streamUrl);
+        }
       }
 
       streamUrl ??= 'https://raw.githubusercontent.com/rafaelreis-hotmart/Audio-Sample-files/master/sample.mp3';
 
-      await _player.setUrl(streamUrl);
-      await _player.play();
-      return true;
+      try {
+        await _player.setUrl(streamUrl);
+        await _player.play();
+        return true;
+      } catch (playError) {
+        // If stream URL failed (e.g. expired GoogleVideo token), re-resolve once fresh
+        final freshUrl = await YoutubeAudioResolver.resolveAudioStream(track);
+        if (freshUrl != null && freshUrl != streamUrl) {
+          AudioPreloadService.cacheStreamUrl(track.id, freshUrl);
+          await _player.setUrl(freshUrl);
+          await _player.play();
+          return true;
+        }
+        rethrow;
+      }
     } catch (_) {
       // Graceful playback error handling & fallback
       return false;

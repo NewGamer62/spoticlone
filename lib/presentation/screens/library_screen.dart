@@ -94,7 +94,7 @@ class _LibraryScreenState extends ConsumerState<LibraryScreen> {
             children: const [
               Icon(Icons.sync_alt, color: AppColors.accent),
               SizedBox(width: 10),
-              Text('Importer une playlist Spotify', style: TextStyle(color: AppColors.text, fontSize: 18)),
+              Text('Importer une playlist', style: TextStyle(color: AppColors.text, fontSize: 18)),
             ],
           ),
           content: SizedBox(
@@ -105,7 +105,7 @@ class _LibraryScreenState extends ConsumerState<LibraryScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const Text(
-                    'Collez simplement le lien de partage de votre playlist Spotify publique. Aucune configuration ni inscription n\'est nécessaire.',
+                    'Collez le lien de votre playlist publique depuis Spotify, YouTube / YouTube Music ou Deezer. Détection 100% automatique et sans inscription.',
                     style: TextStyle(color: AppColors.textMuted, fontSize: 13),
                   ),
                   const SizedBox(height: 16),
@@ -114,8 +114,8 @@ class _LibraryScreenState extends ConsumerState<LibraryScreen> {
                     autofocus: true,
                     style: const TextStyle(color: AppColors.text),
                     decoration: const InputDecoration(
-                      labelText: 'Lien de la playlist Spotify',
-                      hintText: 'https://open.spotify.com/playlist/...',
+                      labelText: 'Lien Spotify, YouTube ou Deezer',
+                      hintText: 'https://open.spotify.com/... ou https://youtube.com/...',
                       hintStyle: TextStyle(color: AppColors.textMuted, fontSize: 12),
                       labelStyle: TextStyle(color: AppColors.accent),
                       border: OutlineInputBorder(),
@@ -217,7 +217,6 @@ class _LibraryScreenState extends ConsumerState<LibraryScreen> {
 
                       try {
                         final Playlist importedPl;
-                        // Si les identifiants dev sont renseignés, on utilise l'API, sinon le scraper public instantané
                         if (cid.isNotEmpty && csec.isNotEmpty) {
                           importedPl = await ref.read(libraryProvider.notifier).importSpotifyPlaylist(
                                 playlistInput: url,
@@ -225,7 +224,7 @@ class _LibraryScreenState extends ConsumerState<LibraryScreen> {
                                 clientSecret: csec,
                               );
                         } else {
-                          importedPl = await ref.read(libraryProvider.notifier).importSpotifyPlaylistByUrl(url);
+                          importedPl = await ref.read(libraryProvider.notifier).importPlaylistFromAnyPlatform(url);
                         }
 
                         if (ctx.mounted) Navigator.pop(ctx);
@@ -291,7 +290,7 @@ class _LibraryScreenState extends ConsumerState<LibraryScreen> {
                           ),
                         ),
                         icon: const Icon(Icons.sync_alt, size: 18, color: AppColors.accent),
-                        label: const Text('Import Spotify', style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600)),
+                        label: const Text('Importer Playlist', style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600)),
                         onPressed: _showImportSpotifyDialog,
                       ),
                       const SizedBox(width: 8),
