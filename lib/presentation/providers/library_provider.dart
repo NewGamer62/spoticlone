@@ -81,11 +81,20 @@ class LibraryState {
 
   List<Track> get downloadedTracks {
     final pool = _allKnownTracks;
-    return downloadedPaths.keys
-        .map((id) => pool[id])
-        .whereType<Track>()
-        .map((t) => _attachDownloadInfo(t))
-        .toList();
+    return downloadedPaths.entries.map((entry) {
+      final t = pool[entry.key] ??
+          Track(
+            id: entry.key,
+            title: entry.key,
+            artist: 'Offline Track',
+            album: 'Downloads',
+            duration: const Duration(seconds: 180),
+            coverUrl: Track.defaultCoverUrl,
+            localFilePath: entry.value,
+            isDownloaded: true,
+          );
+      return _attachDownloadInfo(t);
+    }).toList();
   }
 
   Track _attachDownloadInfo(Track track) {

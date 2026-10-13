@@ -133,8 +133,11 @@ class PlaylistDetailScreen extends ConsumerWidget {
                     tooltip: 'Download playlist (Offline mode)',
                     icon: const Icon(Icons.arrow_circle_down, color: AppColors.textMuted, size: 28),
                     onPressed: () {
+                      final notifier = ref.read(libraryProvider.notifier);
                       for (final tr in currentPlaylist.tracks) {
-                        ref.read(libraryProvider.notifier).toggleDownload(tr);
+                        if (!notifier.isDownloaded(tr.id)) {
+                          notifier.toggleDownload(tr);
+                        }
                       }
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(content: Text('Downloading playlist tracks for offline listening...')),

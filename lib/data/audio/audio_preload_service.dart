@@ -26,7 +26,8 @@ class AudioPreloadService {
     if (track.localFilePath != null && track.localFilePath!.isNotEmpty) return;
     if (track.audioUrl != null &&
         (track.audioUrl!.startsWith('http://') || track.audioUrl!.startsWith('https://')) &&
-        !track.audioUrl!.contains('youtube.com/watch')) {
+        !track.audioUrl!.contains('youtube.com') &&
+        !track.audioUrl!.contains('youtu.be')) {
       _streamCache[trackId] = track.audioUrl!;
       return;
     }

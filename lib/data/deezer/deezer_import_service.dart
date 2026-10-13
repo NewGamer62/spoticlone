@@ -47,9 +47,13 @@ class DeezerImportService {
       final tracksData = data['tracks'] as Map<String, dynamic>?;
       final initialItems = tracksData?['data'] as List<dynamic>? ?? [];
 
+      final seenIds = <String>{};
       for (final item in initialItems) {
         if (item is Map<String, dynamic>) {
-          tracks.add(_parseDeezerTrack(item, coverUrl, title));
+          final t = _parseDeezerTrack(item, coverUrl, title);
+          if (seenIds.add(t.id)) {
+            tracks.add(t);
+          }
         }
       }
 
@@ -73,12 +77,16 @@ class DeezerImportService {
 
         for (final item in pageItems) {
           if (item is Map<String, dynamic>) {
-            tracks.add(_parseDeezerTrack(item, coverUrl, title));
+            final t = _parseDeezerTrack(item, coverUrl, title);
+            if (seenIds.add(t.id)) {
+              tracks.add(t);
+            }
           }
         }
 
         index += pageItems.length;
-        if (pageItems.length < 100 || !pageData.containsKey('next')) {
+        final hasNext = pageData['next'] != null && pageData['next'].toString().isNotEmpty;
+        if (pageItems.length < 100 || !hasNext) {
           break;
         }
       }

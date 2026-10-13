@@ -129,6 +129,59 @@ void main() {
         expect(pl.tracks.first.id, equals('6qvyN6NTUpdfOJRYjtSSd7'));
       }
     });
+
+    test('LocalStorageService imports single track JSON and auto-wraps into playlist', () async {
+      final storage = LocalStorageService();
+      const singleTrackJson = '''{
+        "title": "Bohemian Rhapsody",
+        "artist": "Queen",
+        "album": "A Night at the Opera",
+        "duration_seconds": 354
+      }''';
+
+      final playlists = await storage.importPlaylistsJson(singleTrackJson);
+      expect(playlists.length, equals(1));
+      expect(playlists.first.title, equals('Imported Track'));
+      expect(playlists.first.tracks.length, equals(1));
+      expect(playlists.first.tracks.first.title, equals('Bohemian Rhapsody'));
+      expect(playlists.first.tracks.first.artist, equals('Queen'));
+      expect(playlists.first.tracks.first.duration.inSeconds, equals(354));
+    });
+
+    test('Track.fromJson extracts cover image from nested album.images', () {
+      final track = Track.fromJson({
+        'title': 'Comfortably Numb',
+        'artist': 'Pink Floyd',
+        'album': {
+          'name': 'The Wall',
+          'images': [
+            {'url': 'https://example.com/the-wall.jpg'}
+          ]
+        }
+      });
+
+      expect(track.coverUrl, equals('https://example.com/the-wall.jpg'));
+    });
+
+    test('Playlist deterministic IDs enable upsert without duplicates', () {
+      final pl1 = Playlist.fromJson({
+        'name': 'Rock Classics',
+        'tracks': [
+          {'title': 'Song 1', 'artist': 'Artist 1'}
+        ]
+      });
+
+      final pl2 = Playlist.fromJson({
+        'name': 'Rock Classics',
+        'tracks': [
+          {'title': 'Song 1', 'artist': 'Artist 1'},
+          {'title': 'Song 2', 'artist': 'Artist 2'}
+        ]
+      });
+
+      expect(pl1.id, equals(pl2.id));
+      expect(pl1.id, equals('pl-rock_classics'));
+    });
   });
 
   group('2. LibraryState & aggregation across custom playlists', () {
@@ -202,6 +255,18 @@ void main() {
       expect(state.downloadedTracks.first.title, equals('Disappeared Online Track'));
       expect(state.downloadedTracks.first.isDownloaded, isTrue);
       expect(state.downloadedTracks.first.localFilePath, equals('/data/downloads/offline-only-trk.m4a'));
+    });
+
+    test('downloadedTracks gracefully creates fallback Track if metadata is completely missing', () {
+      final state = LibraryState(
+        playlists: [],
+        downloadedPaths: {'mystery-track-id': '/data/downloads/mystery-track-id.m4a'},
+      );
+
+      expect(state.downloadedTracks.length, equals(1));
+      expect(state.downloadedTracks.first.id, equals('mystery-track-id'));
+      expect(state.downloadedTracks.first.isDownloaded, isTrue);
+      expect(state.downloadedTracks.first.localFilePath, equals('/data/downloads/mystery-track-id.m4a'));
     });
   });
 }

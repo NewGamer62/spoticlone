@@ -96,7 +96,19 @@ class Track {
       }
     }
 
-    final coverRaw = json['cover_url'] ?? json['coverUrl'] ?? json['image'] ?? json['imageUrl'] ?? json['image_url'] ?? json['cover'] ?? json['images'];
+    final coverRaw = json['cover_url'] ??
+        json['coverUrl'] ??
+        json['image'] ??
+        json['imageUrl'] ??
+        json['image_url'] ??
+        json['cover'] ??
+        json['images'] ??
+        (json['album'] is Map
+            ? ((json['album'] as Map)['images'] ??
+                (json['album'] as Map)['cover_url'] ??
+                (json['album'] as Map)['cover'] ??
+                (json['album'] as Map)['image'])
+            : null);
     final coverUrl = parseCoverUrl(coverRaw);
 
     final audioUrl = (json['audio_url'] ?? json['audioUrl'] ?? json['preview_url'] ?? json['previewUrl'] ?? json['preview'] ?? json['url']) as String?;
@@ -119,6 +131,8 @@ class Track {
       isDownloaded: isDownloaded,
     );
   }
+
+  static const String defaultCoverUrl = 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=600&auto=format&fit=crop&q=80';
 
   static String parseArtist(dynamic json) {
     if (json == null) return 'Unknown Artist';
@@ -147,18 +161,17 @@ class Track {
   }
 
   static String parseCoverUrl(dynamic json) {
-    const defaultCover = 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=600&auto=format&fit=crop&q=80';
-    if (json == null) return defaultCover;
+    if (json == null) return defaultCoverUrl;
     if (json is String && json.trim().isNotEmpty) return json.trim();
     if (json is List && json.isNotEmpty) {
       final first = json.first;
       if (first is String) return first;
-      if (first is Map) return (first['url'] ?? first['link'] ?? defaultCover).toString();
+      if (first is Map) return (first['url'] ?? first['link'] ?? defaultCoverUrl).toString();
     }
     if (json is Map) {
-      return (json['url'] ?? json['link'] ?? defaultCover).toString();
+      return (json['url'] ?? json['link'] ?? defaultCoverUrl).toString();
     }
-    return defaultCover;
+    return defaultCoverUrl;
   }
 
   static Duration parseDuration(dynamic value) {

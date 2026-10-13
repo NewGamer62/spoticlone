@@ -26,10 +26,12 @@ class AudioPlayerService {
 
   Future<void> _initAudioSession() async {
     if (_audioSessionConfigured) return;
+    _audioSessionConfigured = true;
     try {
-      final session = await AudioSession.instance;
-      await session.configure(const AudioSessionConfiguration.music());
-      _audioSessionConfigured = true;
+      if (!kIsWeb && Platform.isAndroid) {
+        final session = await AudioSession.instance;
+        await session.configure(const AudioSessionConfiguration.music());
+      }
     } catch (e) {
       debugPrint('AudioSession configuration error: $e');
     }
@@ -66,16 +68,28 @@ class AudioPlayerService {
       }
 
       if (localFile != null) {
-        debugPrint('Playing local offline track from: ${localFile.path}');
-        await _player.setFilePath(localFile.path);
-        await _player.play();
-        return true;
+        try {
+          debugPrint('Playing local offline track from: ${localFile.path}');
+          await _player.setFilePath(localFile.path);
+          await _player.play();
+          return true;
+        } catch (localFileError) {
+          debugPrint('Local file playback failed (${localFile.path}): $localFileError. Falling back to remote streaming.');
+        }
       }
 
       // 2. Otherwise stream from URL (Check Preload Cache first)
-      String? streamUrl = AudioPreloadService.getCachedStreamUrl(track.id) ?? track.audioUrl;
+      String? streamUrl = AudioPreloadService.getCachedStreamUrl(track.id);
       if (streamUrl == null || streamUrl.isEmpty) {
-        streamUrl = await YoutubeAudioResolver.resolveAudioStream(track);
+        final directUrl = track.audioUrl;
+        if (directUrl != null &&
+            (directUrl.startsWith('http://') || directUrl.startsWith('https://')) &&
+            !directUrl.contains('youtube.com') &&
+            !directUrl.contains('youtu.be')) {
+          streamUrl = directUrl;
+        } else {
+          streamUrl = await YoutubeAudioResolver.resolveAudioStream(track);
+        }
         if (streamUrl != null) {
           AudioPreloadService.cacheStreamUrl(track.id, streamUrl);
         }

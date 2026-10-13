@@ -57,11 +57,28 @@ class Playlist {
 
   factory Playlist.fromJson(Map<String, dynamic> json) {
     final title = (json['title'] ?? json['name'] ?? json['playlist_name'] ?? json['playlistName'] ?? 'Imported Playlist').toString();
-    final id = (json['id'] ?? json['playlist_id'] ?? json['playlistId'] ?? 'pl-${DateTime.now().millisecondsSinceEpoch}').toString();
+
+    String id = (json['id'] ?? json['playlist_id'] ?? json['playlistId'])?.toString() ?? '';
+    if (id.isEmpty) {
+      final uri = json['uri']?.toString();
+      if (uri != null && uri.isNotEmpty) {
+        id = uri.replaceFirst('spotify:playlist:', '');
+      } else {
+        id = 'pl-${title.toLowerCase().trim().replaceAll(RegExp(r'[^a-z0-9_-]'), '_')}';
+      }
+    }
+
     final description = (json['description'] ?? json['desc'] ?? json['subtitle'] ?? '').toString();
 
-    final coverRaw = json['cover_url'] ?? json['coverUrl'] ?? json['image'] ?? json['imageUrl'] ?? json['image_url'] ?? json['picture_xl'] ?? json['picture'] ?? json['cover'] ?? json['images'];
-    final coverUrl = Track.parseCoverUrl(coverRaw);
+    final coverRaw = json['cover_url'] ??
+        json['coverUrl'] ??
+        json['image'] ??
+        json['imageUrl'] ??
+        json['image_url'] ??
+        json['picture_xl'] ??
+        json['picture'] ??
+        json['cover'] ??
+        json['images'];
 
     final rawTracks = json['tracks'] ?? json['trackList'] ?? json['items'] ?? json['data'] ?? json['songs'];
     final List<dynamic> trackList;
@@ -83,6 +100,14 @@ class Playlist {
             : item;
         tracks.add(Track.fromJson(trackData));
       }
+    }
+
+    String coverUrl = Track.parseCoverUrl(coverRaw);
+    if ((coverRaw == null || coverUrl == Track.defaultCoverUrl) &&
+        tracks.isNotEmpty &&
+        tracks.first.coverUrl.isNotEmpty &&
+        tracks.first.coverUrl != Track.defaultCoverUrl) {
+      coverUrl = tracks.first.coverUrl;
     }
 
     final createdAt = json['created_at'] != null || json['createdAt'] != null

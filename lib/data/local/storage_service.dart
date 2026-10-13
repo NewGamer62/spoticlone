@@ -177,17 +177,60 @@ class LocalStorageService {
         return list.whereType<Map<String, dynamic>>().map((e) => Playlist.fromJson(e)).toList();
       }
 
+      // 1b. Spotify-like playlists query: { "playlists": { "items": [...] } }
+      if (decoded['playlists'] is Map && decoded['playlists']['items'] is List) {
+        final list = decoded['playlists']['items'] as List;
+        return list.whereType<Map<String, dynamic>>().map((e) => Playlist.fromJson(e)).toList();
+      }
+
       // 2. Object with items: { "items": [...] }
       if (decoded['items'] is List) {
         final items = decoded['items'] as List;
         return importPlaylistsJson(jsonEncode(items));
       }
 
-      // 3. Single playlist object: { "title": "...", "tracks": [...] }
-      if (decoded.containsKey('tracks') ||
-          decoded.containsKey('trackList') ||
-          decoded.containsKey('title') ||
-          decoded.containsKey('name')) {
+      // 3. Object with track list: { "tracks": [...] } or { "data": [...] }
+      final hasTracksList = (decoded['tracks'] is List) ||
+          (decoded['trackList'] is List) ||
+          (decoded['songs'] is List) ||
+          (decoded['tracks'] is Map && (decoded['tracks']['items'] is List || decoded['tracks']['data'] is List)) ||
+          (decoded['data'] is List);
+
+      if (hasTracksList || decoded.containsKey('playlist_id') || decoded.containsKey('playlistId')) {
+        return [Playlist.fromJson(decoded)];
+      }
+
+      // 4. Single track object (e.g. { "title": "...", "artist": "..." } or { "track": {...} })
+      final isSingleTrack = decoded.containsKey('artist') ||
+          decoded.containsKey('artists') ||
+          decoded.containsKey('artist_name') ||
+          decoded.containsKey('artistName') ||
+          decoded.containsKey('duration') ||
+          decoded.containsKey('duration_ms') ||
+          decoded.containsKey('duration_seconds') ||
+          (decoded['track'] is Map<String, dynamic>);
+
+      if (isSingleTrack) {
+        final trackData = decoded['track'] is Map<String, dynamic>
+            ? decoded['track'] as Map<String, dynamic>
+            : decoded;
+        final track = Track.fromJson(trackData);
+        final playlistId = 'pl-import-${track.id}';
+        return [
+          Playlist(
+            id: playlistId,
+            title: 'Imported Track',
+            description: 'Imported track: ${track.title} by ${track.artist}',
+            coverUrl: track.coverUrl,
+            tracks: [track],
+            isCustom: true,
+            createdAt: DateTime.now(),
+          ),
+        ];
+      }
+
+      // Fallback: parse as single playlist
+      if (decoded.containsKey('title') || decoded.containsKey('name')) {
         return [Playlist.fromJson(decoded)];
       }
     }
@@ -214,14 +257,18 @@ class LocalStorageService {
           })
           .toList();
 
+      final firstTrackId = tracks.isNotEmpty ? tracks.first.id : 'empty';
+      final trackHash = tracks.fold<int>(0, (prev, t) => (prev ^ t.id.hashCode).abs());
+      final deterministicId = 'pl-json-$firstTrackId-$trackHash';
+
       return [
         Playlist(
-          id: 'pl-json-${DateTime.now().millisecondsSinceEpoch}',
+          id: deterministicId,
           title: 'Imported Playlist',
           description: 'Imported from JSON (${tracks.length} tracks)',
           coverUrl: tracks.isNotEmpty
               ? tracks.first.coverUrl
-              : 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=600&auto=format&fit=crop&q=80',
+              : Track.defaultCoverUrl,
           tracks: tracks,
           isCustom: true,
           createdAt: DateTime.now(),

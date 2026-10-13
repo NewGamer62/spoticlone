@@ -40,11 +40,27 @@ class YoutubeAudioResolver {
   /// Resolves the preferred AudioOnlyStreamInfo for a track
   static Future<AudioOnlyStreamInfo?> resolvePreferredStreamInfo(Track track) async {
     try {
-      final query = '${track.title} ${track.artist} audio';
-      final searchResults = await _yt.search.search(query);
-      if (searchResults.isEmpty) return null;
+      VideoId? videoId;
+      if (track.id.startsWith('yt-')) {
+        try {
+          videoId = VideoId(track.id.substring(3));
+        } catch (_) {}
+      }
+      if (videoId == null && track.audioUrl != null) {
+        try {
+          final idStr = VideoId.parseVideoId(track.audioUrl!);
+          if (idStr != null) {
+            videoId = VideoId(idStr);
+          }
+        } catch (_) {}
+      }
+      if (videoId == null) {
+        final query = '${track.title} ${track.artist} audio';
+        final searchResults = await _yt.search.search(query);
+        if (searchResults.isEmpty) return null;
+        videoId = searchResults.first.id;
+      }
 
-      final videoId = searchResults.first.id;
       final manifest = await _yt.videos.streamsClient.getManifest(videoId);
       return selectPreferredAudioStream(manifest);
     } catch (e) {

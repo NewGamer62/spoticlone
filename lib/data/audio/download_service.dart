@@ -42,7 +42,6 @@ class DownloadService {
   /// Downloads a track audio stream to local file storage for 100% offline playback
   static Future<String?> downloadTrack(Track track) async {
     await _acquireSlot();
-    File? targetFile;
     try {
       final dir = await getDownloadsDirectory();
       final safeId = track.id.replaceAll(RegExp(r'[^a-zA-Z0-9_-]'), '_');
@@ -52,65 +51,95 @@ class DownloadService {
           (track.audioUrl!.startsWith('http://') || track.audioUrl!.startsWith('https://')) &&
           !track.audioUrl!.contains('youtube.com') &&
           !track.audioUrl!.contains('youtu.be')) {
-        final isM4a = track.audioUrl!.toLowerCase().contains('.m4a') ||
-            track.audioUrl!.toLowerCase().contains('.aac');
-        final ext = isM4a ? '.m4a' : '.mp3';
-        targetFile = File('${dir.path}/$safeId$ext');
+        File? directFile;
+        try {
+          final isM4a = track.audioUrl!.toLowerCase().contains('.m4a') ||
+              track.audioUrl!.toLowerCase().contains('.aac');
+          final ext = isM4a ? '.m4a' : '.mp3';
+          directFile = File('${dir.path}/$safeId$ext');
 
-        final request = await _httpClient.getUrl(Uri.parse(track.audioUrl!));
-        request.headers.set('User-Agent', 'Mozilla/5.0');
-        final response = await request.close();
+          final request = await _httpClient.getUrl(Uri.parse(track.audioUrl!));
+          request.headers.set('User-Agent', 'Mozilla/5.0');
+          final response = await request.close();
 
-        if (response.statusCode == 200) {
-          final sink = targetFile.openWrite();
-          await response.pipe(sink); // Stream.pipe automatically closes sink on completion
-          if (await targetFile.exists() && await targetFile.length() > 0) {
-            return targetFile.path;
+          if (response.statusCode == 200) {
+            final sink = directFile.openWrite();
+            await response.pipe(sink); // Stream.pipe automatically closes sink on completion
+            if (await directFile.exists() && await directFile.length() > 0) {
+              return directFile.path;
+            }
+          }
+          if (await directFile.exists()) {
+            await directFile.delete();
+          }
+        } catch (_) {
+          if (directFile != null && await directFile.exists()) {
+            try {
+              await directFile.delete();
+            } catch (_) {}
           }
         }
-        return null;
       }
 
       // Case 2: Resolve stream info via YouTubeExplode
-      final streamInfo = await YoutubeAudioResolver.resolvePreferredStreamInfo(track);
-      if (streamInfo != null) {
-        final isMp4 = streamInfo.tag == 140 ||
-            streamInfo.container.name.toLowerCase() == 'mp4' ||
-            streamInfo.container.name.toLowerCase() == 'm4a' ||
-            streamInfo.audioCodec.toLowerCase().contains('aac') ||
-            streamInfo.audioCodec.toLowerCase().contains('mp4');
-        final ext = isMp4 ? '.m4a' : '.webm';
-        targetFile = File('${dir.path}/$safeId$ext');
+      File? ytFile;
+      try {
+        final streamInfo = await YoutubeAudioResolver.resolvePreferredStreamInfo(track);
+        if (streamInfo != null) {
+          final isMp4 = streamInfo.tag == 140 ||
+              streamInfo.container.name.toLowerCase() == 'mp4' ||
+              streamInfo.container.name.toLowerCase() == 'm4a' ||
+              streamInfo.audioCodec.toLowerCase().contains('aac') ||
+              streamInfo.audioCodec.toLowerCase().contains('mp4');
+          final ext = isMp4 ? '.m4a' : '.mp3';
+          ytFile = File('${dir.path}/$safeId$ext');
 
-        final audioStream = YoutubeAudioResolver.ytClient.videos.streamsClient.get(streamInfo);
-        final sink = targetFile.openWrite();
-        await audioStream.pipe(sink); // Stream.pipe automatically closes sink on completion
+          final audioStream = YoutubeAudioResolver.ytClient.videos.streamsClient.get(streamInfo);
+          final sink = ytFile.openWrite();
+          await audioStream.pipe(sink); // Stream.pipe automatically closes sink on completion
 
-        if (await targetFile.exists() && await targetFile.length() > 0) {
-          return targetFile.path;
+          if (await ytFile.exists() && await ytFile.length() > 0) {
+            return ytFile.path;
+          }
+          if (await ytFile.exists()) {
+            await ytFile.delete();
+          }
+        }
+      } catch (_) {
+        if (ytFile != null && await ytFile.exists()) {
+          try {
+            await ytFile.delete();
+          } catch (_) {}
         }
       }
 
       // Fallback: Sample MP3 via HTTP client
-      const sampleUrl = 'https://raw.githubusercontent.com/rafaelreis-hotmart/Audio-Sample-files/master/sample.mp3';
-      targetFile = File('${dir.path}/$safeId.mp3');
-      final request = await _httpClient.getUrl(Uri.parse(sampleUrl));
-      final response = await request.close();
-      if (response.statusCode == 200) {
-        final sink = targetFile.openWrite();
-        await response.pipe(sink);
-        if (await targetFile.exists() && await targetFile.length() > 0) {
-          return targetFile.path;
+      File? sampleFile;
+      try {
+        const sampleUrl = 'https://raw.githubusercontent.com/rafaelreis-hotmart/Audio-Sample-files/master/sample.mp3';
+        sampleFile = File('${dir.path}/$safeId.mp3');
+        final request = await _httpClient.getUrl(Uri.parse(sampleUrl));
+        final response = await request.close();
+        if (response.statusCode == 200) {
+          final sink = sampleFile.openWrite();
+          await response.pipe(sink);
+          if (await sampleFile.exists() && await sampleFile.length() > 0) {
+            return sampleFile.path;
+          }
+        }
+        if (await sampleFile.exists()) {
+          await sampleFile.delete();
+        }
+      } catch (_) {
+        if (sampleFile != null && await sampleFile.exists()) {
+          try {
+            await sampleFile.delete();
+          } catch (_) {}
         }
       }
 
       return null;
-    } catch (e) {
-      if (targetFile != null && await targetFile.exists()) {
-        try {
-          await targetFile.delete();
-        } catch (_) {}
-      }
+    } catch (_) {
       return null;
     } finally {
       _releaseSlot();
