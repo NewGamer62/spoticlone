@@ -11,6 +11,8 @@ import '../../domain/models/track.dart';
 class LibraryState {
   final Set<String> likedTrackIds;
   final Map<String, String> downloadedPaths; // trackId -> localFilePath
+  final Map<String, Track> downloadedMetadata; // trackId -> Track
+  final Map<String, Track> likedMetadata; // trackId -> Track
   final Set<String> downloadingTrackIds;
   final List<Playlist> playlists;
   final bool isLoading;
@@ -18,6 +20,8 @@ class LibraryState {
   const LibraryState({
     this.likedTrackIds = const {},
     this.downloadedPaths = const {},
+    this.downloadedMetadata = const {},
+    this.likedMetadata = const {},
     this.downloadingTrackIds = const {},
     this.playlists = const [],
     this.isLoading = true,
@@ -26,6 +30,8 @@ class LibraryState {
   LibraryState copyWith({
     Set<String>? likedTrackIds,
     Map<String, String>? downloadedPaths,
+    Map<String, Track>? downloadedMetadata,
+    Map<String, Track>? likedMetadata,
     Set<String>? downloadingTrackIds,
     List<Playlist>? playlists,
     bool? isLoading,
@@ -33,22 +39,51 @@ class LibraryState {
     return LibraryState(
       likedTrackIds: likedTrackIds ?? this.likedTrackIds,
       downloadedPaths: downloadedPaths ?? this.downloadedPaths,
+      downloadedMetadata: downloadedMetadata ?? this.downloadedMetadata,
+      likedMetadata: likedMetadata ?? this.likedMetadata,
       downloadingTrackIds: downloadingTrackIds ?? this.downloadingTrackIds,
       playlists: playlists ?? this.playlists,
       isLoading: isLoading ?? this.isLoading,
     );
   }
 
+  Map<String, Track> get _allKnownTracks {
+    final map = <String, Track>{};
+    // 1. Built-in catalog tracks
+    for (final t in MusicCatalog.allTracks) {
+      map[t.id] = t;
+    }
+    // 2. All tracks from all playlists (custom, imported, built-in)
+    for (final pl in playlists) {
+      for (final t in pl.tracks) {
+        map[t.id] = t;
+      }
+    }
+    // 3. Stored downloaded tracks metadata
+    for (final entry in downloadedMetadata.entries) {
+      map[entry.key] = entry.value;
+    }
+    // 4. Stored liked tracks metadata
+    for (final entry in likedMetadata.entries) {
+      map[entry.key] = entry.value;
+    }
+    return map;
+  }
+
   List<Track> get likedTracks {
-    return MusicCatalog.allTracks
-        .where((t) => likedTrackIds.contains(t.id))
+    final pool = _allKnownTracks;
+    return likedTrackIds
+        .map((id) => pool[id])
+        .whereType<Track>()
         .map((t) => _attachDownloadInfo(t))
         .toList();
   }
 
   List<Track> get downloadedTracks {
-    return MusicCatalog.allTracks
-        .where((t) => downloadedPaths.containsKey(t.id))
+    final pool = _allKnownTracks;
+    return downloadedPaths.keys
+        .map((id) => pool[id])
+        .whereType<Track>()
         .map((t) => _attachDownloadInfo(t))
         .toList();
   }
@@ -80,10 +115,14 @@ class LibraryNotifier extends Notifier<LibraryState> {
   Future<void> _loadInitialData() async {
     final likedIds = await _storage.loadLikedTrackIds();
     final downloaded = await _storage.loadDownloadedTrackPaths();
+    final downloadedMeta = await _storage.loadDownloadedTracksMetadata();
+    final likedMeta = await _storage.loadLikedTracksMetadata();
     final playlists = await _storage.loadPlaylists();
     state = state.copyWith(
       likedTrackIds: likedIds,
       downloadedPaths: downloaded,
+      downloadedMetadata: downloadedMeta,
+      likedMetadata: likedMeta,
       playlists: playlists,
       isLoading: false,
     );
@@ -91,12 +130,17 @@ class LibraryNotifier extends Notifier<LibraryState> {
 
   Future<void> toggleLike(Track track) async {
     final newSet = Set<String>.from(state.likedTrackIds);
+    final newLikedMeta = Map<String, Track>.from(state.likedMetadata);
     if (newSet.contains(track.id)) {
       newSet.remove(track.id);
+      newLikedMeta.remove(track.id);
+      await _storage.saveLikedTrackMetadata(track, remove: true);
     } else {
       newSet.add(track.id);
+      newLikedMeta[track.id] = track;
+      await _storage.saveLikedTrackMetadata(track);
     }
-    state = state.copyWith(likedTrackIds: newSet);
+    state = state.copyWith(likedTrackIds: newSet, likedMetadata: newLikedMeta);
     await _storage.saveLikedTrackIds(newSet);
   }
 
@@ -113,8 +157,13 @@ class LibraryNotifier extends Notifier<LibraryState> {
         await DownloadService.deleteDownloadedTrack(path);
       }
       final updatedMap = Map<String, String>.from(state.downloadedPaths)..remove(trackId);
-      state = state.copyWith(downloadedPaths: updatedMap);
+      final updatedMeta = Map<String, Track>.from(state.downloadedMetadata)..remove(trackId);
+      state = state.copyWith(
+        downloadedPaths: updatedMap,
+        downloadedMetadata: updatedMeta,
+      );
       await _storage.saveDownloadedTrackPath(trackId, null);
+      await _storage.saveDownloadedTrackMetadata(track, remove: true);
     } else {
       // Start download
       state = state.copyWith(downloadingTrackIds: {...state.downloadingTrackIds, trackId});
@@ -123,11 +172,18 @@ class LibraryNotifier extends Notifier<LibraryState> {
       final updatedDownloading = Set<String>.from(state.downloadingTrackIds)..remove(trackId);
       if (downloadedPath != null) {
         final updatedMap = Map<String, String>.from(state.downloadedPaths)..[trackId] = downloadedPath;
+        final updatedTrack = track.copyWith(
+          localFilePath: downloadedPath,
+          isDownloaded: true,
+        );
+        final updatedMeta = Map<String, Track>.from(state.downloadedMetadata)..[trackId] = updatedTrack;
         state = state.copyWith(
           downloadedPaths: updatedMap,
+          downloadedMetadata: updatedMeta,
           downloadingTrackIds: updatedDownloading,
         );
         await _storage.saveDownloadedTrackPath(trackId, downloadedPath);
+        await _storage.saveDownloadedTrackMetadata(updatedTrack);
       } else {
         state = state.copyWith(downloadingTrackIds: updatedDownloading);
       }
@@ -185,12 +241,19 @@ class LibraryNotifier extends Notifier<LibraryState> {
 
   Future<void> importPlaylistsFromJson(String jsonString) async {
     final imported = await _storage.importPlaylistsJson(jsonString);
-    final existingIds = state.playlists.map((p) => p.id).toSet();
-    final toAdd = imported.where((p) => !existingIds.contains(p.id)).toList();
+    final updatedPlaylists = List<Playlist>.from(state.playlists);
 
-    final updated = [...state.playlists, ...toAdd];
-    state = state.copyWith(playlists: updated);
-    final customOnly = updated.where((p) => p.isCustom).toList();
+    for (final newPl in imported) {
+      final index = updatedPlaylists.indexWhere((p) => p.id == newPl.id);
+      if (index >= 0) {
+        updatedPlaylists[index] = newPl; // Update existing
+      } else {
+        updatedPlaylists.add(newPl); // Append if new
+      }
+    }
+
+    state = state.copyWith(playlists: updatedPlaylists);
+    final customOnly = updatedPlaylists.where((p) => p.isCustom).toList();
     await _storage.saveCustomPlaylists(customOnly);
   }
 

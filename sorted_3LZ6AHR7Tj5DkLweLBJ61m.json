@@ -1,0 +1,902 @@
+[
+  {
+    "title": "Intro",
+    "artist": "Josman",
+    "uri": "spotify:track:6qvyN6NTUpdfOJRYjtSSd7",
+    "cover_url": "https://image-cdn-ak.spotifycdn.com/image/ab67706c0000da844a88174e707be7409f790fa9",
+    "hue": 0.49976964382168854,
+    "sat": 0.16429217415816116,
+    "val": 0.4006635294117647
+  },
+  {
+    "title": "Prologue",
+    "artist": "Lushe",
+    "uri": "spotify:track:4iOls3GH70FlfZ8HlqQhtr",
+    "cover_url": "https://image-cdn-ak.spotifycdn.com/image/ab67706c0000da844a88174e707be7409f790fa9",
+    "hue": 0.49976964382168854,
+    "sat": 0.16429217415816116,
+    "val": 0.4006635294117647
+  },
+  {
+    "title": "VENDREDI À LONDRES",
+    "artist": "NeS, BU$HI",
+    "uri": "spotify:track:1mCEI12DnkUUn2RFBZkRrP",
+    "cover_url": "https://image-cdn-ak.spotifycdn.com/image/ab67706c0000da844a88174e707be7409f790fa9",
+    "hue": 0.49976964382168854,
+    "sat": 0.16429217415816116,
+    "val": 0.4006635294117647
+  },
+  {
+    "title": "SAMEDI SOIR À PARIS",
+    "artist": "NeS, BU$HI",
+    "uri": "spotify:track:1w3UFhLPgeF10llyhN4BMV",
+    "cover_url": "https://image-cdn-ak.spotifycdn.com/image/ab67706c0000da844a88174e707be7409f790fa9",
+    "hue": 0.49976964382168854,
+    "sat": 0.16429217415816116,
+    "val": 0.4006635294117647
+  },
+  {
+    "title": "MA VIE D'AVANT",
+    "artist": "Luther",
+    "uri": "spotify:track:46Prt8cubCmoavHaFXBBix",
+    "cover_url": "https://image-cdn-ak.spotifycdn.com/image/ab67706c0000da844a88174e707be7409f790fa9",
+    "hue": 0.49976964382168854,
+    "sat": 0.16429217415816116,
+    "val": 0.4006635294117647
+  },
+  {
+    "title": "uet",
+    "artist": "Luther, amne",
+    "uri": "spotify:track:6vWMh8oph5GbwsKBckejHo",
+    "cover_url": "https://image-cdn-ak.spotifycdn.com/image/ab67706c0000da844a88174e707be7409f790fa9",
+    "hue": 0.49976964382168854,
+    "sat": 0.16429217415816116,
+    "val": 0.4006635294117647
+  },
+  {
+    "title": "GARÇON",
+    "artist": "Luther",
+    "uri": "spotify:track:7wZnwgGkwpJ8EYJ6VEJD2A",
+    "cover_url": "https://image-cdn-ak.spotifycdn.com/image/ab67706c0000da844a88174e707be7409f790fa9",
+    "hue": 0.49976964382168854,
+    "sat": 0.16429217415816116,
+    "val": 0.4006635294117647
+  },
+  {
+    "title": "virage",
+    "artist": "Luther, amne",
+    "uri": "spotify:track:73VWziD4J2HSu9fooLxige",
+    "cover_url": "https://image-cdn-ak.spotifycdn.com/image/ab67706c0000da844a88174e707be7409f790fa9",
+    "hue": 0.49976964382168854,
+    "sat": 0.16429217415816116,
+    "val": 0.4006635294117647
+  },
+  {
+    "title": "BLAKE & MORTIMER",
+    "artist": "Luther",
+    "uri": "spotify:track:2ockgk7zENjkCbrNlZ5H4K",
+    "cover_url": "https://image-cdn-ak.spotifycdn.com/image/ab67706c0000da844a88174e707be7409f790fa9",
+    "hue": 0.49976964382168854,
+    "sat": 0.16429217415816116,
+    "val": 0.4006635294117647
+  },
+  {
+    "title": "TORIEL - VENI VIDI VIDE",
+    "artist": "Luther",
+    "uri": "spotify:track:2EriWBuBVODGuSF5PMO29I",
+    "cover_url": "https://image-cdn-ak.spotifycdn.com/image/ab67706c0000da844a88174e707be7409f790fa9",
+    "hue": 0.49976964382168854,
+    "sat": 0.16429217415816116,
+    "val": 0.4006635294117647
+  },
+  {
+    "title": "ALAKAZAM",
+    "artist": "Luther",
+    "uri": "spotify:track:3bvAmJOfhcfoAsUYFcqe2c",
+    "cover_url": "https://image-cdn-ak.spotifycdn.com/image/ab67706c0000da844a88174e707be7409f790fa9",
+    "hue": 0.49976964382168854,
+    "sat": 0.16429217415816116,
+    "val": 0.4006635294117647
+  },
+  {
+    "title": "PK TU M'APL ?",
+    "artist": "Luther",
+    "uri": "spotify:track:3Jiucs35DjZQg6c5ZuFnYy",
+    "cover_url": "https://image-cdn-ak.spotifycdn.com/image/ab67706c0000da844a88174e707be7409f790fa9",
+    "hue": 0.49976964382168854,
+    "sat": 0.16429217415816116,
+    "val": 0.4006635294117647
+  },
+  {
+    "title": "ALED",
+    "artist": "Luther",
+    "uri": "spotify:track:41hl3QWKVaFZMZTNZhrARK",
+    "cover_url": "https://image-cdn-ak.spotifycdn.com/image/ab67706c0000da844a88174e707be7409f790fa9",
+    "hue": 0.49976964382168854,
+    "sat": 0.16429217415816116,
+    "val": 0.4006635294117647
+  },
+  {
+    "title": "trapchat",
+    "artist": "Alpha Wann, Veust",
+    "uri": "spotify:track:3tbuiWSvLbEB4d7cbfriPU",
+    "cover_url": "https://image-cdn-ak.spotifycdn.com/image/ab67706c0000da844a88174e707be7409f790fa9",
+    "hue": 0.49976964382168854,
+    "sat": 0.16429217415816116,
+    "val": 0.4006635294117647
+  },
+  {
+    "title": "Système",
+    "artist": "Luidji",
+    "uri": "spotify:track:1XNFIJMhSR7ozrxxjc9mcd",
+    "cover_url": "https://image-cdn-ak.spotifycdn.com/image/ab67706c0000da844a88174e707be7409f790fa9",
+    "hue": 0.49976964382168854,
+    "sat": 0.16429217415816116,
+    "val": 0.4006635294117647
+  },
+  {
+    "title": "Monde",
+    "artist": "Luidji, Ryan Koffi",
+    "uri": "spotify:track:4zD7GnXyl94mNCbyaNw6xf",
+    "cover_url": "https://image-cdn-ak.spotifycdn.com/image/ab67706c0000da844a88174e707be7409f790fa9",
+    "hue": 0.49976964382168854,
+    "sat": 0.16429217415816116,
+    "val": 0.4006635294117647
+  },
+  {
+    "title": "Ailleurs",
+    "artist": "Josman",
+    "uri": "spotify:track:7ujxY1bqVRvMe1sR5iFmxt",
+    "cover_url": "https://image-cdn-ak.spotifycdn.com/image/ab67706c0000da844a88174e707be7409f790fa9",
+    "hue": 0.49976964382168854,
+    "sat": 0.16429217415816116,
+    "val": 0.4006635294117647
+  },
+  {
+    "title": "JOURNAL DE QUÊTES",
+    "artist": "Luther",
+    "uri": "spotify:track:4OloGXT3NSK1zaLX8FHYkK",
+    "cover_url": "https://image-cdn-ak.spotifycdn.com/image/ab67706c0000da844a88174e707be7409f790fa9",
+    "hue": 0.49976964382168854,
+    "sat": 0.16429217415816116,
+    "val": 0.4006635294117647
+  },
+  {
+    "title": "uSQUAD",
+    "artist": "Luther",
+    "uri": "spotify:track:1Jf70cWtoyZxOJnotryPod",
+    "cover_url": "https://image-cdn-ak.spotifycdn.com/image/ab67706c0000da844a88174e707be7409f790fa9",
+    "hue": 0.49976964382168854,
+    "sat": 0.16429217415816116,
+    "val": 0.4006635294117647
+  },
+  {
+    "title": "xénon",
+    "artist": "Wallace Cleaver",
+    "uri": "spotify:track:2QG8AhrFYWa0MrdJRLyPOf",
+    "cover_url": "https://image-cdn-ak.spotifycdn.com/image/ab67706c0000da844a88174e707be7409f790fa9",
+    "hue": 0.49976964382168854,
+    "sat": 0.16429217415816116,
+    "val": 0.4006635294117647
+  },
+  {
+    "title": "VIN ITALIEN",
+    "artist": "Yvnnis",
+    "uri": "spotify:track:4CCg2u9wnnFHmPtrjuTsaM",
+    "cover_url": "https://image-cdn-ak.spotifycdn.com/image/ab67706c0000da844a88174e707be7409f790fa9",
+    "hue": 0.49976964382168854,
+    "sat": 0.16429217415816116,
+    "val": 0.4006635294117647
+  },
+  {
+    "title": "SENSATION",
+    "artist": "HOUDI",
+    "uri": "spotify:track:0pIWSS7xmChrYzfNFEfdzn",
+    "cover_url": "https://image-cdn-ak.spotifycdn.com/image/ab67706c0000da844a88174e707be7409f790fa9",
+    "hue": 0.49976964382168854,
+    "sat": 0.16429217415816116,
+    "val": 0.4006635294117647
+  },
+  {
+    "title": "HÉROS",
+    "artist": "Yvnnis",
+    "uri": "spotify:track:6rXrpyjMECjAuLlgcW5TXz",
+    "cover_url": "https://image-cdn-ak.spotifycdn.com/image/ab67706c0000da844a88174e707be7409f790fa9",
+    "hue": 0.49976964382168854,
+    "sat": 0.16429217415816116,
+    "val": 0.4006635294117647
+  },
+  {
+    "title": "GEPETTO",
+    "artist": "BU$HI",
+    "uri": "spotify:track:4R0Vv1C8ChUI7PrDrdX4a2",
+    "cover_url": "https://image-cdn-ak.spotifycdn.com/image/ab67706c0000da844a88174e707be7409f790fa9",
+    "hue": 0.49976964382168854,
+    "sat": 0.16429217415816116,
+    "val": 0.4006635294117647
+  },
+  {
+    "title": "KILLCAM",
+    "artist": "NeS, Luther",
+    "uri": "spotify:track:3MdbKq8mWOW0TB76PbcjnD",
+    "cover_url": "https://image-cdn-ak.spotifycdn.com/image/ab67706c0000da844a88174e707be7409f790fa9",
+    "hue": 0.49976964382168854,
+    "sat": 0.16429217415816116,
+    "val": 0.4006635294117647
+  },
+  {
+    "title": "sln vie",
+    "artist": "Wallace Cleaver",
+    "uri": "spotify:track:6ENkzXADUXpRQPXX2Tvm8M",
+    "cover_url": "https://image-cdn-ak.spotifycdn.com/image/ab67706c0000da844a88174e707be7409f790fa9",
+    "hue": 0.49976964382168854,
+    "sat": 0.16429217415816116,
+    "val": 0.4006635294117647
+  },
+  {
+    "title": "plus rien n'est grave",
+    "artist": "Wallace Cleaver",
+    "uri": "spotify:track:5kRJ8GyaiTeE9u0ZCw1ySm",
+    "cover_url": "https://image-cdn-ak.spotifycdn.com/image/ab67706c0000da844a88174e707be7409f790fa9",
+    "hue": 0.49976964382168854,
+    "sat": 0.16429217415816116,
+    "val": 0.4006635294117647
+  },
+  {
+    "title": "CHEVALIER CITADIN",
+    "artist": "NeS",
+    "uri": "spotify:track:2K54qMapljPASWtY4HvsRC",
+    "cover_url": "https://image-cdn-ak.spotifycdn.com/image/ab67706c0000da844a88174e707be7409f790fa9",
+    "hue": 0.49976964382168854,
+    "sat": 0.16429217415816116,
+    "val": 0.4006635294117647
+  },
+  {
+    "title": "Les aléas",
+    "artist": "Tom D.",
+    "uri": "spotify:track:6PyisSqQjVMcKOx2HnNpra",
+    "cover_url": "https://image-cdn-ak.spotifycdn.com/image/ab67706c0000da844a88174e707be7409f790fa9",
+    "hue": 0.49976964382168854,
+    "sat": 0.16429217415816116,
+    "val": 0.4006635294117647
+  },
+  {
+    "title": "NO HOOK",
+    "artist": "La Fève",
+    "uri": "spotify:track:0xw6ZfsL704tDXUvvZnLlS",
+    "cover_url": "https://image-cdn-ak.spotifycdn.com/image/ab67706c0000da844a88174e707be7409f790fa9",
+    "hue": 0.49976964382168854,
+    "sat": 0.16429217415816116,
+    "val": 0.4006635294117647
+  },
+  {
+    "title": "MAUVAIS PAYEUR",
+    "artist": "La Fève",
+    "uri": "spotify:track:18gJ5bLhq6cfKJefdwzGpj",
+    "cover_url": "https://image-cdn-ak.spotifycdn.com/image/ab67706c0000da844a88174e707be7409f790fa9",
+    "hue": 0.49976964382168854,
+    "sat": 0.16429217415816116,
+    "val": 0.4006635294117647
+  },
+  {
+    "title": "ZAZA",
+    "artist": "La Fève",
+    "uri": "spotify:track:7m9v48f67C9e1A1MoaM46O",
+    "cover_url": "https://image-cdn-ak.spotifycdn.com/image/ab67706c0000da844a88174e707be7409f790fa9",
+    "hue": 0.49976964382168854,
+    "sat": 0.16429217415816116,
+    "val": 0.4006635294117647
+  },
+  {
+    "title": "CommeUneBalle",
+    "artist": "Gemroz",
+    "uri": "spotify:track:501xnpizIKV5L8ZrUADZ6Y",
+    "cover_url": "https://image-cdn-ak.spotifycdn.com/image/ab67706c0000da844a88174e707be7409f790fa9",
+    "hue": 0.49976964382168854,
+    "sat": 0.16429217415816116,
+    "val": 0.4006635294117647
+  },
+  {
+    "title": "melodrama",
+    "artist": "disiz, Theodora",
+    "uri": "spotify:track:5Y8C6KjzBRKvcT3Aln1Bc4",
+    "cover_url": "https://image-cdn-ak.spotifycdn.com/image/ab67706c0000da844a88174e707be7409f790fa9",
+    "hue": 0.49976964382168854,
+    "sat": 0.16429217415816116,
+    "val": 0.4006635294117647
+  },
+  {
+    "title": "vivienne westwood",
+    "artist": "snorunt, Shaadi",
+    "uri": "spotify:track:7EJ8oYu23aN0QoNXGJsomu",
+    "cover_url": "https://image-cdn-ak.spotifycdn.com/image/ab67706c0000da844a88174e707be7409f790fa9",
+    "hue": 0.49976964382168854,
+    "sat": 0.16429217415816116,
+    "val": 0.4006635294117647
+  },
+  {
+    "title": "BTRD",
+    "artist": "RnBoi",
+    "uri": "spotify:track:2hndzMd89P8nEG4jTRurPk",
+    "cover_url": "https://image-cdn-ak.spotifycdn.com/image/ab67706c0000da844a88174e707be7409f790fa9",
+    "hue": 0.49976964382168854,
+    "sat": 0.16429217415816116,
+    "val": 0.4006635294117647
+  },
+  {
+    "title": "FIDDLESTICK",
+    "artist": "NINEEN",
+    "uri": "spotify:track:4MYw9koqhJaEOEhQustYNu",
+    "cover_url": "https://image-cdn-ak.spotifycdn.com/image/ab67706c0000da844a88174e707be7409f790fa9",
+    "hue": 0.49976964382168854,
+    "sat": 0.16429217415816116,
+    "val": 0.4006635294117647
+  },
+  {
+    "title": "SOS",
+    "artist": "NINEEN",
+    "uri": "spotify:track:0wElRmq41Gc8roVmN6gh5Z",
+    "cover_url": "https://image-cdn-ak.spotifycdn.com/image/ab67706c0000da844a88174e707be7409f790fa9",
+    "hue": 0.49976964382168854,
+    "sat": 0.16429217415816116,
+    "val": 0.4006635294117647
+  },
+  {
+    "title": "ELLE M'DIT NINEEN",
+    "artist": "NINEEN",
+    "uri": "spotify:track:3PCk4fP4N5eAdBuczi3fo2",
+    "cover_url": "https://image-cdn-ak.spotifycdn.com/image/ab67706c0000da844a88174e707be7409f790fa9",
+    "hue": 0.49976964382168854,
+    "sat": 0.16429217415816116,
+    "val": 0.4006635294117647
+  },
+  {
+    "title": "GMAIL",
+    "artist": "Favé",
+    "uri": "spotify:track:6cETuNTKBm0k4NiCJwU2bT",
+    "cover_url": "https://image-cdn-ak.spotifycdn.com/image/ab67706c0000da844a88174e707be7409f790fa9",
+    "hue": 0.49976964382168854,
+    "sat": 0.16429217415816116,
+    "val": 0.4006635294117647
+  },
+  {
+    "title": "Pyramide",
+    "artist": "Werenoi, Damso",
+    "uri": "spotify:track:0xVMWYKYXKpiKqejjCIMDQ",
+    "cover_url": "https://image-cdn-ak.spotifycdn.com/image/ab67706c0000da844a88174e707be7409f790fa9",
+    "hue": 0.49976964382168854,
+    "sat": 0.16429217415816116,
+    "val": 0.4006635294117647
+  },
+  {
+    "title": "carrelage italien",
+    "artist": "Alpha Wann",
+    "uri": "spotify:track:7BrLid02c3OYZ02oGtWEHm",
+    "cover_url": "https://image-cdn-ak.spotifycdn.com/image/ab67706c0000da844a88174e707be7409f790fa9",
+    "hue": 0.49976964382168854,
+    "sat": 0.16429217415816116,
+    "val": 0.4006635294117647
+  },
+  {
+    "title": "Melrose Place",
+    "artist": "KeBlack, Guy2Bezbar",
+    "uri": "spotify:track:3SBBYSbzkLvx96bKzneYsF",
+    "cover_url": "https://image-cdn-ak.spotifycdn.com/image/ab67706c0000da844a88174e707be7409f790fa9",
+    "hue": 0.49976964382168854,
+    "sat": 0.16429217415816116,
+    "val": 0.4006635294117647
+  },
+  {
+    "title": "Mia",
+    "artist": "SEYSEY, Bolémvn",
+    "uri": "spotify:track:6CRb7rnmx8Mqrb8cpixcVi",
+    "cover_url": "https://image-cdn-ak.spotifycdn.com/image/ab67706c0000da844a88174e707be7409f790fa9",
+    "hue": 0.49976964382168854,
+    "sat": 0.16429217415816116,
+    "val": 0.4006635294117647
+  },
+  {
+    "title": "All eyes on me",
+    "artist": "Werenoi",
+    "uri": "spotify:track:3oLn9QmwHO8Yu7NRCdAfIj",
+    "cover_url": "https://image-cdn-ak.spotifycdn.com/image/ab67706c0000da844a88174e707be7409f790fa9",
+    "hue": 0.49976964382168854,
+    "sat": 0.16429217415816116,
+    "val": 0.4006635294117647
+  },
+  {
+    "title": "Paris",
+    "artist": "Nono La Grinta",
+    "uri": "spotify:track:6ctcVdXaJKn5LVFDjMBqzc",
+    "cover_url": "https://image-cdn-ak.spotifycdn.com/image/ab67706c0000da844a88174e707be7409f790fa9",
+    "hue": 0.49976964382168854,
+    "sat": 0.16429217415816116,
+    "val": 0.4006635294117647
+  },
+  {
+    "title": "KYKY2BONDY",
+    "artist": "Hamza",
+    "uri": "spotify:track:2t5LPLptBemV0W8IGLBLju",
+    "cover_url": "https://image-cdn-ak.spotifycdn.com/image/ab67706c0000da844a88174e707be7409f790fa9",
+    "hue": 0.49976964382168854,
+    "sat": 0.16429217415816116,
+    "val": 0.4006635294117647
+  },
+  {
+    "title": "Demain",
+    "artist": "PLK",
+    "uri": "spotify:track:66TAAKeoOD0cFpVRug9IXZ",
+    "cover_url": "https://image-cdn-ak.spotifycdn.com/image/ab67706c0000da844a88174e707be7409f790fa9",
+    "hue": 0.49976964382168854,
+    "sat": 0.16429217415816116,
+    "val": 0.4006635294117647
+  },
+  {
+    "title": "Bissap",
+    "artist": "Folie's",
+    "uri": "spotify:track:2WIhtZLt9zAcvM6SwUDkjA",
+    "cover_url": "https://image-cdn-ak.spotifycdn.com/image/ab67706c0000da844a88174e707be7409f790fa9",
+    "hue": 0.49976964382168854,
+    "sat": 0.16429217415816116,
+    "val": 0.4006635294117647
+  },
+  {
+    "title": "Hola",
+    "artist": "PLK",
+    "uri": "spotify:track:2SMO9OW1G7dojLjZjoKVFD",
+    "cover_url": "https://image-cdn-ak.spotifycdn.com/image/ab67706c0000da844a88174e707be7409f790fa9",
+    "hue": 0.49976964382168854,
+    "sat": 0.16429217415816116,
+    "val": 0.4006635294117647
+  },
+  {
+    "title": "Ma Réalité",
+    "artist": "Hamza",
+    "uri": "spotify:track:1IMgLV6uQ1mzc1XzfhLRQt",
+    "cover_url": "https://image-cdn-ak.spotifycdn.com/image/ab67706c0000da844a88174e707be7409f790fa9",
+    "hue": 0.49976964382168854,
+    "sat": 0.16429217415816116,
+    "val": 0.4006635294117647
+  },
+  {
+    "title": "Nocif",
+    "artist": "Hamza, Damso",
+    "uri": "spotify:track:4BZZTXcd5ROagKhynqj61X",
+    "cover_url": "https://image-cdn-ak.spotifycdn.com/image/ab67706c0000da844a88174e707be7409f790fa9",
+    "hue": 0.49976964382168854,
+    "sat": 0.16429217415816116,
+    "val": 0.4006635294117647
+  },
+  {
+    "title": "AMBER",
+    "artist": "Zola",
+    "uri": "spotify:track:3OFAB9JacVGaz4CWSsfZhZ",
+    "cover_url": "https://image-cdn-ak.spotifycdn.com/image/ab67706c0000da844a88174e707be7409f790fa9",
+    "hue": 0.49976964382168854,
+    "sat": 0.16429217415816116,
+    "val": 0.4006635294117647
+  },
+  {
+    "title": "Mercedes",
+    "artist": "Favé",
+    "uri": "spotify:track:4Fxl5s1vKNl5XjxBrw327j",
+    "cover_url": "https://image-cdn-ak.spotifycdn.com/image/ab67706c0000da844a88174e707be7409f790fa9",
+    "hue": 0.49976964382168854,
+    "sat": 0.16429217415816116,
+    "val": 0.4006635294117647
+  },
+  {
+    "title": "Dolce Camara",
+    "artist": "Booba, SDM",
+    "uri": "spotify:track:15vGti1ooNZFlDUdlLukX6",
+    "cover_url": "https://image-cdn-ak.spotifycdn.com/image/ab67706c0000da844a88174e707be7409f790fa9",
+    "hue": 0.49976964382168854,
+    "sat": 0.16429217415816116,
+    "val": 0.4006635294117647
+  },
+  {
+    "title": "Urus",
+    "artist": "Favé",
+    "uri": "spotify:track:7A2DyRIqqelhZ4caPJMaFI",
+    "cover_url": "https://image-cdn-ak.spotifycdn.com/image/ab67706c0000da844a88174e707be7409f790fa9",
+    "hue": 0.49976964382168854,
+    "sat": 0.16429217415816116,
+    "val": 0.4006635294117647
+  },
+  {
+    "title": "RENCONTRE",
+    "artist": "disiz, Damso",
+    "uri": "spotify:track:2toEys3zZ8rRB242Na7FZh",
+    "cover_url": "https://image-cdn-ak.spotifycdn.com/image/ab67706c0000da844a88174e707be7409f790fa9",
+    "hue": 0.49976964382168854,
+    "sat": 0.16429217415816116,
+    "val": 0.4006635294117647
+  },
+  {
+    "title": "SUBLIME",
+    "artist": "disiz",
+    "uri": "spotify:track:3nR6ytbSKOF4NxsgqrYG9u",
+    "cover_url": "https://image-cdn-ak.spotifycdn.com/image/ab67706c0000da844a88174e707be7409f790fa9",
+    "hue": 0.49976964382168854,
+    "sat": 0.16429217415816116,
+    "val": 0.4006635294117647
+  },
+  {
+    "title": "Freaks",
+    "artist": "Surf Curse",
+    "uri": "spotify:track:7EkWXAI1wn8Ii883ecd9xr",
+    "cover_url": "https://image-cdn-ak.spotifycdn.com/image/ab67706c0000da844a88174e707be7409f790fa9",
+    "hue": 0.49976964382168854,
+    "sat": 0.16429217415816116,
+    "val": 0.4006635294117647
+  },
+  {
+    "title": "DNB",
+    "artist": "Gemroz",
+    "uri": "spotify:track:1N9E7JUORA84lpCBtQNMIV",
+    "cover_url": "https://image-cdn-ak.spotifycdn.com/image/ab67706c0000da844a88174e707be7409f790fa9",
+    "hue": 0.49976964382168854,
+    "sat": 0.16429217415816116,
+    "val": 0.4006635294117647
+  },
+  {
+    "title": "P.I.B",
+    "artist": "La Rvfleuze",
+    "uri": "spotify:track:5YpjJNnPOEkTupO9Doy14b",
+    "cover_url": "https://image-cdn-ak.spotifycdn.com/image/ab67706c0000da844a88174e707be7409f790fa9",
+    "hue": 0.49976964382168854,
+    "sat": 0.16429217415816116,
+    "val": 0.4006635294117647
+  },
+  {
+    "title": "Serrure #5",
+    "artist": "La Rvfleuze",
+    "uri": "spotify:track:79HWCJC8r8UHGUOAaRN4IO",
+    "cover_url": "https://image-cdn-ak.spotifycdn.com/image/ab67706c0000da844a88174e707be7409f790fa9",
+    "hue": 0.49976964382168854,
+    "sat": 0.16429217415816116,
+    "val": 0.4006635294117647
+  },
+  {
+    "title": "Flying Blue",
+    "artist": "La Fouine, L2B",
+    "uri": "spotify:track:7JGEUwyfP2oH2nbMllxeo8",
+    "cover_url": "https://image-cdn-ak.spotifycdn.com/image/ab67706c0000da844a88174e707be7409f790fa9",
+    "hue": 0.49976964382168854,
+    "sat": 0.16429217415816116,
+    "val": 0.4006635294117647
+  },
+  {
+    "title": "adore",
+    "artist": "Tom D.",
+    "uri": "spotify:track:4eTqxKLR6UXqjgGSPjNwqL",
+    "cover_url": "https://image-cdn-ak.spotifycdn.com/image/ab67706c0000da844a88174e707be7409f790fa9",
+    "hue": 0.49976964382168854,
+    "sat": 0.16429217415816116,
+    "val": 0.4006635294117647
+  },
+  {
+    "title": "MALKHUT",
+    "artist": "Ptite Soeur, neophron, reivilose",
+    "uri": "spotify:track:3mX8c8j7vUAbcPfhx2XSTi",
+    "cover_url": "https://image-cdn-ak.spotifycdn.com/image/ab67706c0000da844a88174e707be7409f790fa9",
+    "hue": 0.49976964382168854,
+    "sat": 0.16429217415816116,
+    "val": 0.4006635294117647
+  },
+  {
+    "title": "FASHION DESIGNA",
+    "artist": "Theodora",
+    "uri": "spotify:track:6wggq2ikhLMnS0o1deK2Xz",
+    "cover_url": "https://image-cdn-ak.spotifycdn.com/image/ab67706c0000da844a88174e707be7409f790fa9",
+    "hue": 0.49976964382168854,
+    "sat": 0.16429217415816116,
+    "val": 0.4006635294117647
+  },
+  {
+    "title": "Mode Avion",
+    "artist": "Favé",
+    "uri": "spotify:track:49xOYhvSnClDymbvY7pFe8",
+    "cover_url": "https://image-cdn-ak.spotifycdn.com/image/ab67706c0000da844a88174e707be7409f790fa9",
+    "hue": 0.49976964382168854,
+    "sat": 0.16429217415816116,
+    "val": 0.4006635294117647
+  },
+  {
+    "title": "Calme toi",
+    "artist": "Kerchak",
+    "uri": "spotify:track:30d0q6kt1BIfwAQUCAfxVQ",
+    "cover_url": "https://image-cdn-ak.spotifycdn.com/image/ab67706c0000da844a88174e707be7409f790fa9",
+    "hue": 0.49976964382168854,
+    "sat": 0.16429217415816116,
+    "val": 0.4006635294117647
+  },
+  {
+    "title": "Meuda",
+    "artist": "Tiakola",
+    "uri": "spotify:track:4wNyrbY6B2Okii8VeKo2B2",
+    "cover_url": "https://image-cdn-ak.spotifycdn.com/image/ab67706c0000da844a88174e707be7409f790fa9",
+    "hue": 0.49976964382168854,
+    "sat": 0.16429217415816116,
+    "val": 0.4006635294117647
+  },
+  {
+    "title": "Laboratoire",
+    "artist": "Werenoi",
+    "uri": "spotify:track:7wOgZ1otoKYDvKyQKP1sNZ",
+    "cover_url": "https://image-cdn-ak.spotifycdn.com/image/ab67706c0000da844a88174e707be7409f790fa9",
+    "hue": 0.49976964382168854,
+    "sat": 0.16429217415816116,
+    "val": 0.4006635294117647
+  },
+  {
+    "title": "Nouvelles",
+    "artist": "PLK",
+    "uri": "spotify:track:7d391WfC0HtftRcetDFQUy",
+    "cover_url": "https://image-cdn-ak.spotifycdn.com/image/ab67706c0000da844a88174e707be7409f790fa9",
+    "hue": 0.49976964382168854,
+    "sat": 0.16429217415816116,
+    "val": 0.4006635294117647
+  },
+  {
+    "title": "Copine",
+    "artist": "PLK",
+    "uri": "spotify:track:1y1ZLfGzQ3SmeI7jkZpaxi",
+    "cover_url": "https://image-cdn-ak.spotifycdn.com/image/ab67706c0000da844a88174e707be7409f790fa9",
+    "hue": 0.49976964382168854,
+    "sat": 0.16429217415816116,
+    "val": 0.4006635294117647
+  },
+  {
+    "title": "Mode avion",
+    "artist": "DJ Kawest, L2B",
+    "uri": "spotify:track:5m8Q6aKhrqmoF64xlPcZva",
+    "cover_url": "https://image-cdn-ak.spotifycdn.com/image/ab67706c0000da844a88174e707be7409f790fa9",
+    "hue": 0.49976964382168854,
+    "sat": 0.16429217415816116,
+    "val": 0.4006635294117647
+  },
+  {
+    "title": "déconnecté",
+    "artist": "Wallace Cleaver",
+    "uri": "spotify:track:63ifhLOMJOXNAXLHeWZytF",
+    "cover_url": "https://image-cdn-ak.spotifycdn.com/image/ab67706c0000da844a88174e707be7409f790fa9",
+    "hue": 0.49976964382168854,
+    "sat": 0.16429217415816116,
+    "val": 0.4006635294117647
+  },
+  {
+    "title": "est-ce que je l'aime ?",
+    "artist": "Wallace Cleaver",
+    "uri": "spotify:track:4Np5YI09eEJAoLVuzDVjGf",
+    "cover_url": "https://image-cdn-ak.spotifycdn.com/image/ab67706c0000da844a88174e707be7409f790fa9",
+    "hue": 0.49976964382168854,
+    "sat": 0.16429217415816116,
+    "val": 0.4006635294117647
+  },
+  {
+    "title": "dans ma tête",
+    "artist": "Wallace Cleaver",
+    "uri": "spotify:track:6xJS65ZF2FYYgIoKolXIKv",
+    "cover_url": "https://image-cdn-ak.spotifycdn.com/image/ab67706c0000da844a88174e707be7409f790fa9",
+    "hue": 0.49976964382168854,
+    "sat": 0.16429217415816116,
+    "val": 0.4006635294117647
+  },
+  {
+    "title": "çalavie",
+    "artist": "Wallace Cleaver",
+    "uri": "spotify:track:1IjubLixlOxocMXPBgG6e7",
+    "cover_url": "https://image-cdn-ak.spotifycdn.com/image/ab67706c0000da844a88174e707be7409f790fa9",
+    "hue": 0.49976964382168854,
+    "sat": 0.16429217415816116,
+    "val": 0.4006635294117647
+  },
+  {
+    "title": "MONTMARTRE",
+    "artist": "Lushe",
+    "uri": "spotify:track:580B1q70P9t1Y9biHmp6fP",
+    "cover_url": "https://image-cdn-ak.spotifycdn.com/image/ab67706c0000da844a88174e707be7409f790fa9",
+    "hue": 0.49976964382168854,
+    "sat": 0.16429217415816116,
+    "val": 0.4006635294117647
+  },
+  {
+    "title": "Reste en Vie",
+    "artist": "Luidji",
+    "uri": "spotify:track:1qkwBaQUYh3HeUlUlGu8YM",
+    "cover_url": "https://image-cdn-ak.spotifycdn.com/image/ab67706c0000da844a88174e707be7409f790fa9",
+    "hue": 0.49976964382168854,
+    "sat": 0.16429217415816116,
+    "val": 0.4006635294117647
+  },
+  {
+    "title": "il bat",
+    "artist": "Lekchan",
+    "uri": "spotify:track:7f9Q5eX6wHgRRta77lDxwm",
+    "cover_url": "https://image-cdn-ak.spotifycdn.com/image/ab67706c0000da844a88174e707be7409f790fa9",
+    "hue": 0.49976964382168854,
+    "sat": 0.16429217415816116,
+    "val": 0.4006635294117647
+  },
+  {
+    "title": "jdéteste les flammes",
+    "artist": "Lekchan",
+    "uri": "spotify:track:1zPzX39SWK3Z5cbmziDSaM",
+    "cover_url": "https://image-cdn-ak.spotifycdn.com/image/ab67706c0000da844a88174e707be7409f790fa9",
+    "hue": 0.49976964382168854,
+    "sat": 0.16429217415816116,
+    "val": 0.4006635294117647
+  },
+  {
+    "title": "56s #4",
+    "artist": "Lp2.0",
+    "uri": "spotify:track:5TxxzIHybuUlRdhmzB6Yfm",
+    "cover_url": "https://image-cdn-ak.spotifycdn.com/image/ab67706c0000da844a88174e707be7409f790fa9",
+    "hue": 0.49976964382168854,
+    "sat": 0.16429217415816116,
+    "val": 0.4006635294117647
+  },
+  {
+    "title": "SOLEIL TIMIDE",
+    "artist": "Cielbleu",
+    "uri": "spotify:track:229lbzTKR1XR6XSkmWKa6R",
+    "cover_url": "https://image-cdn-ak.spotifycdn.com/image/ab67706c0000da844a88174e707be7409f790fa9",
+    "hue": 0.49976964382168854,
+    "sat": 0.16429217415816116,
+    "val": 0.4006635294117647
+  },
+  {
+    "title": "APPART SALE",
+    "artist": "Cielbleu",
+    "uri": "spotify:track:6S1vLl3YK1xN6eNGNjQIvU",
+    "cover_url": "https://image-cdn-ak.spotifycdn.com/image/ab67706c0000da844a88174e707be7409f790fa9",
+    "hue": 0.49976964382168854,
+    "sat": 0.16429217415816116,
+    "val": 0.4006635294117647
+  },
+  {
+    "title": "Le cerf",
+    "artist": "Lekchan",
+    "uri": "spotify:track:3sfYPtM0TDCihzaxEXlmF9",
+    "cover_url": "https://image-cdn-ak.spotifycdn.com/image/ab67706c0000da844a88174e707be7409f790fa9",
+    "hue": 0.49976964382168854,
+    "sat": 0.16429217415816116,
+    "val": 0.4006635294117647
+  },
+  {
+    "title": "Le lac",
+    "artist": "Lekchan",
+    "uri": "spotify:track:52l2zVgu3RCz44og0ciyv8",
+    "cover_url": "https://image-cdn-ak.spotifycdn.com/image/ab67706c0000da844a88174e707be7409f790fa9",
+    "hue": 0.49976964382168854,
+    "sat": 0.16429217415816116,
+    "val": 0.4006635294117647
+  },
+  {
+    "title": "marée basse",
+    "artist": "Lekchan",
+    "uri": "spotify:track:0eCIsAvOcKqL9MNZkcG3eB",
+    "cover_url": "https://image-cdn-ak.spotifycdn.com/image/ab67706c0000da844a88174e707be7409f790fa9",
+    "hue": 0.49976964382168854,
+    "sat": 0.16429217415816116,
+    "val": 0.4006635294117647
+  },
+  {
+    "title": "Tao",
+    "artist": "Lekchan",
+    "uri": "spotify:track:7DWfoTL89NIpxugtdiV3Jh",
+    "cover_url": "https://image-cdn-ak.spotifycdn.com/image/ab67706c0000da844a88174e707be7409f790fa9",
+    "hue": 0.49976964382168854,
+    "sat": 0.16429217415816116,
+    "val": 0.4006635294117647
+  },
+  {
+    "title": "TU DEVIENS QUOI EN CE MOMENT ?",
+    "artist": "poissonchat, Lushe, Stanislas",
+    "uri": "spotify:track:5TVOGVhEQNEdnkVYCtE5p5",
+    "cover_url": "https://image-cdn-ak.spotifycdn.com/image/ab67706c0000da844a88174e707be7409f790fa9",
+    "hue": 0.49976964382168854,
+    "sat": 0.16429217415816116,
+    "val": 0.4006635294117647
+  },
+  {
+    "title": "Jour de plus",
+    "artist": "Freeze corleone",
+    "uri": "spotify:track:2pVx50PsFf3TsJtDOsVJ3b",
+    "cover_url": "https://image-cdn-ak.spotifycdn.com/image/ab67706c0000da844a88174e707be7409f790fa9",
+    "hue": 0.49976964382168854,
+    "sat": 0.16429217415816116,
+    "val": 0.4006635294117647
+  },
+  {
+    "title": "la colline intro",
+    "artist": "Tom D.",
+    "uri": "spotify:track:7w5m3qVkBJK1zYFxTLlP6S",
+    "cover_url": "https://image-cdn-ak.spotifycdn.com/image/ab67706c0000da844a88174e707be7409f790fa9",
+    "hue": 0.49976964382168854,
+    "sat": 0.16429217415816116,
+    "val": 0.4006635294117647
+  },
+  {
+    "title": "pour toi",
+    "artist": "Tom D.",
+    "uri": "spotify:track:5MPclKo4adKPswA74m0aPk",
+    "cover_url": "https://image-cdn-ak.spotifycdn.com/image/ab67706c0000da844a88174e707be7409f790fa9",
+    "hue": 0.49976964382168854,
+    "sat": 0.16429217415816116,
+    "val": 0.4006635294117647
+  },
+  {
+    "title": "B.M.S (by my side)",
+    "artist": "Rambo goyard",
+    "uri": "spotify:track:17pMT4RIeRWlQiuErirVic",
+    "cover_url": "https://image-cdn-ak.spotifycdn.com/image/ab67706c0000da844a88174e707be7409f790fa9",
+    "hue": 0.49976964382168854,
+    "sat": 0.16429217415816116,
+    "val": 0.4006635294117647
+  },
+  {
+    "title": "TIF⸃ERET",
+    "artist": "Ptite Soeur, neophron",
+    "uri": "spotify:track:4q8OlVaK8Rxclbh3Bbriz1",
+    "cover_url": "https://image-cdn-ak.spotifycdn.com/image/ab67706c0000da844a88174e707be7409f790fa9",
+    "hue": 0.49976964382168854,
+    "sat": 0.16429217415816116,
+    "val": 0.4006635294117647
+  },
+  {
+    "title": "alibi",
+    "artist": "Luther",
+    "uri": "spotify:track:6CWslpH2W2osBsPDza6Syk",
+    "cover_url": "https://image-cdn-ak.spotifycdn.com/image/ab67706c0000da844a88174e707be7409f790fa9",
+    "hue": 0.49976964382168854,
+    "sat": 0.16429217415816116,
+    "val": 0.4006635294117647
+  },
+  {
+    "title": "SOLEIL",
+    "artist": "a6el",
+    "uri": "spotify:track:6AoOzPhqx5LbtYfKBlBrEG",
+    "cover_url": "https://image-cdn-ak.spotifycdn.com/image/ab67706c0000da844a88174e707be7409f790fa9",
+    "hue": 0.49976964382168854,
+    "sat": 0.16429217415816116,
+    "val": 0.4006635294117647
+  },
+  {
+    "title": "J'attends au Carrefour Market",
+    "artist": "a6el",
+    "uri": "spotify:track:7gmwFiZtsPyBT8wI2u6mGN",
+    "cover_url": "https://image-cdn-ak.spotifycdn.com/image/ab67706c0000da844a88174e707be7409f790fa9",
+    "hue": 0.49976964382168854,
+    "sat": 0.16429217415816116,
+    "val": 0.4006635294117647
+  },
+  {
+    "title": "crystal",
+    "artist": "abel31, Luther",
+    "uri": "spotify:track:4Dqfav6Zpajj6srW7xVKhu",
+    "cover_url": "https://image-cdn-ak.spotifycdn.com/image/ab67706c0000da844a88174e707be7409f790fa9",
+    "hue": 0.49976964382168854,
+    "sat": 0.16429217415816116,
+    "val": 0.4006635294117647
+  },
+  {
+    "title": "Hyrule",
+    "artist": "Luv Resval",
+    "uri": "spotify:track:4kbnCo4muQyeA6xiv6c4ue",
+    "cover_url": "https://image-cdn-ak.spotifycdn.com/image/ab67706c0000da844a88174e707be7409f790fa9",
+    "hue": 0.49976964382168854,
+    "sat": 0.16429217415816116,
+    "val": 0.4006635294117647
+  },
+  {
+    "title": "T3",
+    "artist": "Luther",
+    "uri": "spotify:track:5OysBDhR9Da8Aw1WvzAzUc",
+    "cover_url": "https://image-cdn-ak.spotifycdn.com/image/ab67706c0000da844a88174e707be7409f790fa9",
+    "hue": 0.49976964382168854,
+    "sat": 0.16429217415816116,
+    "val": 0.4006635294117647
+  }
+]

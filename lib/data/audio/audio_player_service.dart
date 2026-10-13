@@ -1,13 +1,21 @@
 import 'dart:async';
 import 'dart:io';
+import 'package:flutter/foundation.dart';
+import 'package:audio_session/audio_session.dart';
 import 'package:just_audio/just_audio.dart';
 import '../../domain/models/track.dart';
 import 'audio_preload_service.dart';
+import 'download_service.dart';
 import 'youtube_audio_resolver.dart';
 
 class AudioPlayerService {
   final AudioPlayer _player = AudioPlayer();
   Track? _currentTrack;
+  bool _audioSessionConfigured = false;
+
+  AudioPlayerService() {
+    _initAudioSession();
+  }
 
   AudioPlayer get player => _player;
   Track? get currentTrack => _currentTrack;
@@ -16,17 +24,52 @@ class AudioPlayerService {
   Stream<Duration> get positionStream => _player.positionStream;
   Stream<Duration?> get durationStream => _player.durationStream;
 
+  Future<void> _initAudioSession() async {
+    if (_audioSessionConfigured) return;
+    try {
+      final session = await AudioSession.instance;
+      await session.configure(const AudioSessionConfiguration.music());
+      _audioSessionConfigured = true;
+    } catch (e) {
+      debugPrint('AudioSession configuration error: $e');
+    }
+  }
+
   Future<bool> playTrack(Track track) async {
     _currentTrack = track;
+    await _initAudioSession();
     try {
       // 1. Check if track is downloaded locally on disk (Offline Mode)
+      File? localFile;
       if (track.localFilePath != null && track.localFilePath!.isNotEmpty) {
-        final localFile = File(track.localFilePath!);
-        if (await localFile.exists()) {
-          await _player.setFilePath(localFile.path);
-          await _player.play();
-          return true;
+        final f = File(track.localFilePath!);
+        if (await f.exists() && await f.length() > 0) {
+          localFile = f;
         }
+      }
+
+      // Autonomous disk check if localFilePath was not set or missing
+      if (localFile == null) {
+        try {
+          final dir = await DownloadService.getDownloadsDirectory();
+          final safeId = track.id.replaceAll(RegExp(r'[^a-zA-Z0-9_-]'), '_');
+          for (final ext in ['.m4a', '.mp3', '.webm']) {
+            final candidate = File('${dir.path}/$safeId$ext');
+            if (await candidate.exists() && await candidate.length() > 0) {
+              localFile = candidate;
+              break;
+            }
+          }
+        } catch (e) {
+          debugPrint('Autonomous disk check notice: $e');
+        }
+      }
+
+      if (localFile != null) {
+        debugPrint('Playing local offline track from: ${localFile.path}');
+        await _player.setFilePath(localFile.path);
+        await _player.play();
+        return true;
       }
 
       // 2. Otherwise stream from URL (Check Preload Cache first)
@@ -41,10 +84,12 @@ class AudioPlayerService {
       streamUrl ??= 'https://raw.githubusercontent.com/rafaelreis-hotmart/Audio-Sample-files/master/sample.mp3';
 
       try {
+        debugPrint('Streaming audio for "${track.title}" from URL: $streamUrl');
         await _player.setUrl(streamUrl);
         await _player.play();
         return true;
       } catch (playError) {
+        debugPrint('Primary stream URL failed for "${track.title}": $playError. Attempting fresh stream resolution...');
         // If stream URL failed (e.g. expired GoogleVideo token), re-resolve once fresh
         final freshUrl = await YoutubeAudioResolver.resolveAudioStream(track);
         if (freshUrl != null && freshUrl != streamUrl) {
@@ -55,8 +100,8 @@ class AudioPlayerService {
         }
         rethrow;
       }
-    } catch (_) {
-      // Graceful playback error handling & fallback
+    } catch (e, stack) {
+      debugPrint('Error playing track "${track.title}" (${track.id}): $e\n$stack');
       return false;
     }
   }

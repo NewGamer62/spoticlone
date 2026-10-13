@@ -56,18 +56,49 @@ class Playlist {
   }
 
   factory Playlist.fromJson(Map<String, dynamic> json) {
+    final title = (json['title'] ?? json['name'] ?? json['playlist_name'] ?? json['playlistName'] ?? 'Imported Playlist').toString();
+    final id = (json['id'] ?? json['playlist_id'] ?? json['playlistId'] ?? 'pl-${DateTime.now().millisecondsSinceEpoch}').toString();
+    final description = (json['description'] ?? json['desc'] ?? json['subtitle'] ?? '').toString();
+
+    final coverRaw = json['cover_url'] ?? json['coverUrl'] ?? json['image'] ?? json['imageUrl'] ?? json['image_url'] ?? json['picture_xl'] ?? json['picture'] ?? json['cover'] ?? json['images'];
+    final coverUrl = Track.parseCoverUrl(coverRaw);
+
+    final rawTracks = json['tracks'] ?? json['trackList'] ?? json['items'] ?? json['data'] ?? json['songs'];
+    final List<dynamic> trackList;
+    if (rawTracks is List<dynamic>) {
+      trackList = rawTracks;
+    } else if (rawTracks is Map<String, dynamic> && rawTracks['data'] is List<dynamic>) {
+      trackList = rawTracks['data'] as List<dynamic>;
+    } else if (rawTracks is Map<String, dynamic> && rawTracks['items'] is List<dynamic>) {
+      trackList = rawTracks['items'] as List<dynamic>;
+    } else {
+      trackList = [];
+    }
+
+    final tracks = <Track>[];
+    for (final item in trackList) {
+      if (item is Map<String, dynamic>) {
+        final trackData = item.containsKey('track') && item['track'] is Map<String, dynamic>
+            ? item['track'] as Map<String, dynamic>
+            : item;
+        tracks.add(Track.fromJson(trackData));
+      }
+    }
+
+    final createdAt = json['created_at'] != null || json['createdAt'] != null
+        ? DateTime.tryParse((json['created_at'] ?? json['createdAt']).toString()) ?? DateTime.now()
+        : DateTime.now();
+
+    final isCustom = (json['is_custom'] ?? json['isCustom'] ?? true) as bool;
+
     return Playlist(
-      id: json['id'] as String,
-      title: json['title'] as String,
-      description: json['description'] as String? ?? '',
-      coverUrl: json['cover_url'] as String? ?? '',
-      tracks: (json['tracks'] as List<dynamic>? ?? [])
-          .map((t) => Track.fromJson(t as Map<String, dynamic>))
-          .toList(),
-      isCustom: json['is_custom'] as bool? ?? true,
-      createdAt: json['created_at'] != null
-          ? DateTime.parse(json['created_at'] as String)
-          : DateTime.now(),
+      id: id,
+      title: title,
+      description: description,
+      coverUrl: coverUrl,
+      tracks: tracks,
+      isCustom: isCustom,
+      createdAt: createdAt,
     );
   }
 }

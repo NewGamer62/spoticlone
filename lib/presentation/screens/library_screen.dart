@@ -108,7 +108,29 @@ class _LibraryScreenState extends ConsumerState<LibraryScreen> {
                     'Collez le lien de votre playlist publique depuis Spotify, YouTube / YouTube Music ou Deezer. Détection 100% automatique et sans inscription.',
                     style: TextStyle(color: AppColors.textMuted, fontSize: 13),
                   ),
-                  const SizedBox(height: 16),
+                  Container(
+                    margin: const EdgeInsets.symmetric(vertical: 10),
+                    padding: const EdgeInsets.all(10),
+                    decoration: BoxDecoration(
+                      color: AppColors.surfaceHighlight.withValues(alpha: 0.5),
+                      borderRadius: BorderRadius.circular(8),
+                      border: Border.all(color: AppColors.border),
+                    ),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: const [
+                        Icon(Icons.info_outline, color: AppColors.accent, size: 18),
+                        SizedBox(width: 8),
+                        Expanded(
+                          child: Text(
+                            'Note : L\'import 1-clic Spotify sans clés API est limité à 100 titres par les serveurs de Spotify. Pour des playlists plus grandes (> 100 titres), renseignez vos clés API Spotify Developer ci-dessous, ou importez depuis Deezer, YouTube ou un fichier JSON.',
+                            style: TextStyle(color: AppColors.textMuted, fontSize: 11.5, height: 1.3),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(height: 6),
                   TextField(
                     controller: urlController,
                     autofocus: true,

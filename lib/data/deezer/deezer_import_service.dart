@@ -43,38 +43,44 @@ class DeezerImportService {
           data['picture_medium'] as String? ??
           'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=600&auto=format&fit=crop&q=80';
 
-      final tracksData = data['tracks'] as Map<String, dynamic>?;
-      final items = tracksData?['data'] as List<dynamic>? ?? [];
-
       final tracks = <Track>[];
-      for (final item in items) {
-        final t = item as Map<String, dynamic>;
-        final trackId = t['id'].toString();
-        final trackTitle = t['title'] as String? ?? 'Unknown Title';
-        
-        final artistObj = t['artist'] as Map<String, dynamic>?;
-        final artistName = artistObj?['name'] as String? ?? 'Unknown Artist';
+      final tracksData = data['tracks'] as Map<String, dynamic>?;
+      final initialItems = tracksData?['data'] as List<dynamic>? ?? [];
 
-        final albumObj = t['album'] as Map<String, dynamic>?;
-        final albumTitle = albumObj?['title'] as String? ?? title;
-        final albumCover = albumObj?['cover_xl'] as String? ??
-            albumObj?['cover_medium'] as String? ??
-            coverUrl;
+      for (final item in initialItems) {
+        if (item is Map<String, dynamic>) {
+          tracks.add(_parseDeezerTrack(item, coverUrl, title));
+        }
+      }
 
-        final durationSec = t['duration'] as int? ?? 180;
-        final previewUrl = t['preview'] as String?;
+      final totalTracks = data['nb_tracks'] as int? ?? (tracksData?['total'] as int? ?? tracks.length);
+      var index = tracks.length;
 
-        tracks.add(
-          Track(
-            id: 'dz-$trackId',
-            title: trackTitle,
-            artist: artistName,
-            album: albumTitle,
-            duration: Duration(seconds: durationSec),
-            coverUrl: albumCover,
-            audioUrl: (previewUrl != null && previewUrl.isNotEmpty) ? previewUrl : null,
-          ),
-        );
+      // Paginate Deezer tracks endpoint if more tracks exist
+      while (tracks.length < totalTracks && index < 2000) {
+        final pageUri = Uri.parse('https://api.deezer.com/playlist/$playlistId/tracks?limit=100&index=$index');
+        final pageReq = await _client.getUrl(pageUri);
+        pageReq.headers.set('User-Agent', 'Mozilla/5.0');
+        final pageRes = await pageReq.close();
+        if (pageRes.statusCode != 200) break;
+
+        final pageBody = await pageRes.transform(utf8.decoder).join();
+        final pageData = jsonDecode(pageBody) as Map<String, dynamic>;
+        if (pageData.containsKey('error')) break;
+
+        final pageItems = pageData['data'] as List<dynamic>? ?? [];
+        if (pageItems.isEmpty) break;
+
+        for (final item in pageItems) {
+          if (item is Map<String, dynamic>) {
+            tracks.add(_parseDeezerTrack(item, coverUrl, title));
+          }
+        }
+
+        index += pageItems.length;
+        if (pageItems.length < 100 || !pageData.containsKey('next')) {
+          break;
+        }
       }
 
       return Playlist(
@@ -89,5 +95,32 @@ class DeezerImportService {
     } catch (_) {
       return null;
     }
+  }
+
+  static Track _parseDeezerTrack(Map<String, dynamic> t, String fallbackCover, String fallbackAlbum) {
+    final trackId = t['id'].toString();
+    final trackTitle = t['title'] as String? ?? 'Unknown Title';
+
+    final artistObj = t['artist'] as Map<String, dynamic>?;
+    final artistName = artistObj?['name'] as String? ?? 'Unknown Artist';
+
+    final albumObj = t['album'] as Map<String, dynamic>?;
+    final albumTitle = albumObj?['title'] as String? ?? fallbackAlbum;
+    final albumCover = albumObj?['cover_xl'] as String? ??
+        albumObj?['cover_medium'] as String? ??
+        fallbackCover;
+
+    final durationSec = t['duration'] as int? ?? 180;
+    final previewUrl = t['preview'] as String?;
+
+    return Track(
+      id: 'dz-$trackId',
+      title: trackTitle,
+      artist: artistName,
+      album: albumTitle,
+      duration: Duration(seconds: durationSec),
+      coverUrl: albumCover,
+      audioUrl: (previewUrl != null && previewUrl.isNotEmpty) ? previewUrl : null,
+    );
   }
 }

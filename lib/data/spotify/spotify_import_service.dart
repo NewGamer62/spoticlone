@@ -165,7 +165,7 @@ class SpotifyImportService {
       final tracks = <Track>[];
       var nextUrl = 'https://api.spotify.com/v1/playlists/$playlistId/tracks?limit=100';
 
-      while (nextUrl.isNotEmpty && tracks.length < 500) {
+      while (nextUrl.isNotEmpty && tracks.length < 2000) {
         final trReq = await _client.getUrl(Uri.parse(nextUrl));
         trReq.headers.set('Authorization', 'Bearer $accessToken');
         final trRes = await trReq.close();
