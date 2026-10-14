@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:youtube_explode_dart/youtube_explode_dart.dart' hide Playlist;
 import '../../domain/models/playlist.dart';
 import '../../domain/models/track.dart';
@@ -62,8 +63,13 @@ class YoutubeAudioResolver {
       }
 
       final manifest = await _yt.videos.streamsClient.getManifest(videoId);
-      return selectPreferredAudioStream(manifest);
-    } catch (e) {
+      final selectedStream = selectPreferredAudioStream(manifest);
+      if (selectedStream == null) {
+        debugPrint('[YoutubeAudioResolver] No suitable audio stream found for "${track.title}" (videoId: ${videoId.value})');
+      }
+      return selectedStream;
+    } catch (e, st) {
+      debugPrint('[YoutubeAudioResolver] Resolution failed for "${track.title}" (${track.artist}): $e\n$st');
       return null;
     }
   }
