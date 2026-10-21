@@ -13,23 +13,11 @@
 
 ## 📸 Aperçu de l'Interface
 
-```
-+-----------------------------------------------------------------------------------------+
-| [SpotiClone]               |  Recherche, Accueil & Découvertes  | File d'attente (Queue) |
-|                            |------------------------------------|-----------------------|
-|  * Accueil                 |  [Good evening]                    | 1. Midnight City      |
-|  * Rechercher              |  [Made For You]                    | 2. Cyberpunk Horizon  |
-|  * Bibliothèque            |  +---------+  +---------+          | 3. Coffee in Paris    |
-|                            |  | Top Hits|  | Lo-Fi   |          |                       |
-| -------------------------- |  +---------+  +---------+          | Paroles (LRC Sync)    |
-| PLAYLISTS                  |                                    | "Midnight city lights |
-|  - Synthwave Retrowave     |  Titres Populaires (Grid & List)   |  calling out our name"|
-|  - Deep Focus & Flow       |  1. Midnight City Lights - 03:45   |                       |
-+-----------------------------------------------------------------------------------------+
-| [Cover] Titre • Artiste    |   [Shuffle] [Prev] (Play) [Next] [Repeat]   | [Mic] [Vol: ===-]   |
-|                            |   01:15  ==========================  03:45  |                       |
-+-----------------------------------------------------------------------------------------+
-```
+| 🏠 Accueil & Découverte | 🔍 Recherche & Filtres |
+| :---: | :---: |
+| ![Accueil](docs/screenshots/01_home_discovery.png) | ![Recherche](docs/screenshots/02_search_explore.png) |
+| **🎤 Paroles Synchronisées (LRC)** | **📋 File d'attente & Playlists** |
+| ![Paroles](docs/screenshots/03_player_lyrics.png) | ![File d'attente](docs/screenshots/04_playlist_queue.png) |
 
 ---
 
