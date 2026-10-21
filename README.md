@@ -4,7 +4,7 @@
 [![Dart](https://img.shields.io/badge/Dart-3.x-0175C2?logo=dart&logoColor=white)](https://dart.dev)
 [![Platform](https://img.shields.io/badge/Platform-Windows%20%7C%20Android-black?logo=windows&logoColor=white)](https://github.com/NewGamer62/spoticlone)
 [![License: MIT](https://img.shields.io/badge/License-MIT-1DB954.svg)](LICENSE)
-[![Tests](https://img.shields.io/badge/Tests-Passing-brightgreen.svg)]()
+[![CI](https://github.com/NewGamer62/spoticlone/actions/workflows/ci.yml/badge.svg)](https://github.com/NewGamer62/spoticlone/actions/workflows/ci.yml)
 [![Clean--Room](https://img.shields.io/badge/Clean--Room-Verified-success.svg)]()
 
 > **SpotiClone** est un lecteur de musique multiplateforme open-source pour Windows et Android, conçu selon une méthodologie clean-room stricte. Il offre une expérience audio fluide et réactive sans publicité, sans DRM et sans compte payant obligatoire.
